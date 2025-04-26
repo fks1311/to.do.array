@@ -1,11 +1,15 @@
+import { NavState } from "@utils/Atom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 export const Summary = () => {
+  const curNav = useRecoilValue(NavState);
+
   return (
     <Layout>
       <Info>
         <Title>
-          <Main>0</Main>
+          <Main>{curNav.count}</Main>
         </Title>
         <p>완료할 작업</p>
       </Info>

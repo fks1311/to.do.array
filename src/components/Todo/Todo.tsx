@@ -3,13 +3,15 @@ import styled from "styled-components";
 import { List } from "@components/Todo/List";
 import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/Input";
-
-type Nav = "오늘" | "내일" | "이번주" | "완료됨";
+import { useRecoilValue } from "recoil";
+import { NavState } from "@utils/Atom";
 
 export const Todo = () => {
+  const curNav = useRecoilValue(NavState);
+
   return (
     <Layout>
-      <p id="sel">오늘</p>
+      <p id="sel">{curNav.day}</p>
       <Main>
         <Summary />
         <Input />
