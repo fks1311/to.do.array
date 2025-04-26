@@ -14,5 +14,13 @@ declare module "styled-components" {
       tablet: string;
       desktop: string;
     };
+    darkmode: {
+      bg: string;
+      bg_elevated: string;
+      divider: string;
+      main_color: string;
+      txt_primary: string;
+      txt_secondary: string;
+    };
   }
 }
