@@ -1,15 +1,20 @@
 import styled from "styled-components";
-import { Total } from "./Total";
+
 import { Input } from "./Input";
+import { List } from "./List";
+import { Summary } from "./Summary";
+
+type Nav = "오늘" | "내일" | "이번주" | "완료됨";
 
 export const Todo = () => {
   return (
     <Layout>
-      <p>오늘</p>
-      <div>
-        <Total />
+      <p id="sel">오늘</p>
+      <Main>
+        <Summary />
         <Input />
-      </div>
+        <List />
+      </Main>
     </Layout>
   );
 };
@@ -18,9 +23,16 @@ const Layout = styled.div`
   flex: 0.5;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 1rem;
-  p {
+  gap: 2rem;
+  padding: 2rem 1rem;
+  #sel {
+    font-size: 2rem;
     color: ${({ theme: { darkmode } }) => darkmode.txt_primary};
   }
+`;
+
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
