@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { Header } from "./components/Head";
-import { Nav } from "./components/Nav";
-import { Timer } from "./components/Timer/Timer";
-import { Todo } from "./components/Todo/Todo";
+import { Header } from "@components/Head";
+import { Nav } from "@components/Nav";
+import { Timer } from "@components/Timer/Timer";
+import { Todo } from "@components/Todo/Todo";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../assets/icon.png";
+import logo from "@assets/icon.png";
 import { JSX } from "react";
 
 interface NavItem {

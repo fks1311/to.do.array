@@ -1,11 +1,8 @@
 import styled from "styled-components";
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/main
-import { Input } from "./Input";
-import { List } from "./List";
-import { Summary } from "./Summary";
+import { List } from "@components/Todo/List";
+import { Summary } from "@components/Todo/Summary";
+import { Input } from "@components/Todo/Input";
 
 type Nav = "오늘" | "내일" | "이번주" | "완료됨";
 
