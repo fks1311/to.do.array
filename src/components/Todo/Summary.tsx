@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Total = () => {
+export const Summary = () => {
   return (
     <Layout>
       <Info>
@@ -27,7 +27,6 @@ export const Total = () => {
 };
 
 const Layout = styled.div`
-  width: 95%;
   display: flex;
   align-items: center;
   padding: 0.3rem;
