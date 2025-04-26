@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Logo from "../assets/icon.png";
+import Logo from "@assets/icon.png";
 import { JSX } from "react";
 
 export const Header = (): JSX.Element => {
