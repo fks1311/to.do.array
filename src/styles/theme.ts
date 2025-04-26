@@ -14,9 +14,21 @@ const media: DefaultTheme["media"] = {
   desktop: `screen and (min-width:${breakpoints.desktop})`,
 };
 
-const theme: DefaultTheme = {
+const darkmode: DefaultTheme["darkmode"] = {
+  bg: `#121214`,
+  bg_elevated: `#9897A1`,
+  divider: `#2C2C34`,
+  main_color: `#4734C5`,
+  txt_primary: `#F9F9FD`,
+  txt_secondary: `#DADAE5`,
+};
+
+const theme = {
   breakpoints,
   media,
+  darkmode,
 };
 
 export default theme;
+// B5B5BD
+// DADAE5
