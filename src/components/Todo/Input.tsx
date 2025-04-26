@@ -3,15 +3,18 @@ import styled from "styled-components";
 export const Input = () => {
   return (
     <Layout>
-      <input />
+      <input placeholder="엔터키를 눌러 작업을 추가합니다." />
     </Layout>
   );
 };
 
 const Layout = styled.div`
-  width: 100%;
   input {
-    width: 95%;
+    width: 100%;
+    padding: 0.7rem 10px;
+    border: none;
+    border-radius: 3px;
+    box-sizing: border-box;
   }
 `;
 
