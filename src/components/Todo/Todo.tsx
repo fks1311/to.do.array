@@ -1,4 +1,8 @@
 import styled from "styled-components";
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/main
 import { Input } from "./Input";
 import { List } from "./List";
 import { Summary } from "./Summary";
