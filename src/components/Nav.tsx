@@ -1,23 +1,18 @@
-import { JSX } from "react";
+import React from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import logo from "@assets/icon.png";
 import { NavState } from "@utils/Atom";
+import { NavAtom, NavItem } from "model/Nav";
 
-interface NavItem {
-  icon: string;
-  title: string;
-  todo: number;
-}
-
-export const Nav = (): JSX.Element => {
+export const Nav: React.FC = () => {
   const navlist: NavItem[] = [
     { icon: logo, title: "오늘", todo: 0 },
     { icon: logo, title: "내일", todo: 0 },
     { icon: logo, title: "이번주", todo: 0 },
     { icon: logo, title: "완료됨", todo: 0 },
   ];
-  const setCurNav = useSetRecoilState(NavState);
+  const setCurNav = useSetRecoilState<NavAtom>(NavState);
   const onClickNav = (data: NavItem) => {
     setCurNav({ day: data.title, count: data.todo });
   };
@@ -25,13 +20,13 @@ export const Nav = (): JSX.Element => {
   return (
     <Layout>
       {navlist.map((data, i) => (
-        <NavItem key={i} onClick={() => onClickNav(data)}>
+        <NavList key={i} onClick={() => onClickNav(data)}>
           <NavTitle>
             <img src={data.icon} />
             <div>{data.title}</div>
           </NavTitle>
           <TodoCount>{data.todo}</TodoCount>
-        </NavItem>
+        </NavList>
       ))}
     </Layout>
   );
@@ -46,7 +41,7 @@ const Layout = styled.nav`
   border-right: 1px solid ${({ theme: { darkmode } }) => darkmode.divider};
 `;
 
-const NavItem = styled.div`
+const NavList = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
