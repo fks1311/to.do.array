@@ -1,9 +1,10 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import logo from "@assets/icon.png";
+
+import { NavAtom, NavItem } from "@model/Nav";
 import { NavState } from "@utils/Atom";
-import { NavAtom, NavItem } from "model/Nav";
+import logo from "@assets/icon.png";
 
 export const Nav: React.FC = () => {
   const navlist: NavItem[] = [

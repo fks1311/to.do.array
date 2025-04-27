@@ -1,20 +1,20 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { List } from "@components/Todo/List";
 import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/Input";
-import { useRecoilValue } from "recoil";
 import { NavState } from "@utils/Atom";
 
 export const Todo = () => {
-  const curNav = useRecoilValue(NavState);
+  const title = useRecoilValue(NavState).day;
 
   return (
     <Layout>
-      <p id="sel">{curNav.day}</p>
+      <p id="sel">{title}</p>
       <Main>
         <Summary />
-        <Input />
+        <Input title={title} />
         <List />
       </Main>
     </Layout>
