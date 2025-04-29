@@ -1,6 +1,6 @@
-import { LocalStorage } from "model/locaStorage";
-import { NavAtom } from "model/Nav";
 import { atom } from "recoil";
+import { NavAtom } from "@model/Nav";
+import { basic } from "@model/locaStorage";
 
 export const NavState = atom<NavAtom>({
   key: "navState",
@@ -10,12 +10,7 @@ export const NavState = atom<NavAtom>({
   },
 });
 
-export const LocalStorageState = atom<LocalStorage>({
-  key: "localStorageState",
-  default: {
-    today: [{ todo: "", completed: 0, cancel: 0 }],
-    tomorrow: [{ todo: "", completed: 0, cancel: 0 }],
-    week: [{ todo: "", completed: 0, cancel: 0 }],
-    completed: [{ todo: "", completed: 0, cancel: 0 }],
-  },
+export const todosAtom = atom({
+  key: "todosState",
+  default: basic,
 });

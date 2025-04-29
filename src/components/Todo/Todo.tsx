@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { List } from "@components/Todo/List";
 import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/Input";
-import { NavState } from "@utils/Atom";
+import { NavState } from "@utils/atom";
 
 export const Todo = () => {
   const title = useRecoilValue(NavState).day;
