@@ -1,9 +1,57 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 
-export const Input = () => {
+import { NavItem } from "@model/Nav";
+import { useSetRecoilState } from "recoil";
+import { todosAtom } from "@utils/atom";
+
+interface OwnProps extends Pick<NavItem, "title"> {}
+type Filter = "today" | "tomorrow" | "week";
+
+export const Input: React.FC<OwnProps> = ({ title }) => {
+  const [inputValue, setInputValue] = useState<string>();
+  const setTodos = useSetRecoilState(todosAtom);
+  const navFilter = (title: string) => {
+    switch (title) {
+      case "오늘":
+        return "today";
+      case "내일":
+        return "tomorrow";
+      case "이번주":
+        return "week";
+      default:
+        return "today";
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, title: string) => {
+    if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
+      const filter: Filter = navFilter(title);
+      const newTodo = { todo: inputValue, completed: 0, cancel: 0 };
+      setTodos((prev) => {
+        const updated = {
+          ...prev,
+          [filter]: [...(prev[filter] ?? []), newTodo],
+        };
+        window.localStorage.setItem("todos", JSON.stringify(updated));
+        return updated;
+      });
+      setInputValue("");
+    }
+  };
+
+  const onChangeTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <Layout>
-      <input placeholder="엔터키를 눌러 작업을 추가합니다." />
+      <input
+        value={inputValue || ""}
+        placeholder="엔터키를 눌러 작업을 추가합니다."
+        onKeyDown={(e) => handleKeyDown(e, title)}
+        onChange={onChangeTodo}
+      />
     </Layout>
   );
 };
@@ -17,11 +65,3 @@ const Layout = styled.div`
     box-sizing: border-box;
   }
 `;
-
-/**
- * 작업 요소
- *
- * 입력
- * 엔터키로 등록
- *
- */

@@ -3,7 +3,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { NavAtom, NavItem } from "@model/Nav";
-import { NavState } from "@utils/Atom";
+import { NavState } from "@utils/atom";
 import logo from "@assets/icon.png";
 
 export const Nav: React.FC = () => {

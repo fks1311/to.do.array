@@ -1,4 +1,4 @@
-import { NavState } from "@utils/Atom";
+import { NavState } from "@utils/atom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
