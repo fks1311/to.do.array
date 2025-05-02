@@ -5,28 +5,25 @@ import { NavItem } from "@model/Nav";
 import { TodoItem } from "@model/locaStorage";
 import { getLocalStorage } from "@utils/localStorage";
 import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
+import { TodoCheckDown } from "./TodoCheckDown";
+import { navEngParsing } from "@utils/todoHelpers";
 
 interface OwnProps extends Pick<NavItem, "title"> {}
 export const List: React.FC<OwnProps> = ({ title }) => {
   const getLocalTodos = getLocalStorage("todos");
+  const day = navEngParsing(title);
   const [list, setList] = useState<TodoItem[]>([]);
   const [complete, setComplete] = useState<TodoItem[]>(getLocalTodos?.completed ?? []);
-  const navFilter = (title: string) => {
-    switch (title) {
-      case "오늘":
-        return "today";
-      case "내일":
-        return "tomorrow";
-      case "이번주":
-        return "week";
-      default:
-        return "today";
-    }
-  };
+  const [isOpen, setIsOpen] = useState<boolean[] | []>([]);
 
   useEffect(() => {
-    const day = navFilter(title);
+    // todo list 렌더링
     setList(getLocalTodos[day]);
+
+    // title에 따라 Array.from 배열 생성(완료/미루기/취소 관련)
+    const todos = getLocalTodos?.[day];
+    const newIsOpenArray = Array.from({ length: todos.length }, () => false);
+    setIsOpen(newIsOpenArray);
   }, [title]);
 
   const onCompleted = (idx: number) => {
@@ -48,10 +45,18 @@ export const List: React.FC<OwnProps> = ({ title }) => {
     let newLocalStorage = { ...getLocalTodos };
     newLocalStorage = {
       ...newLocalStorage,
-      [`${navFilter(title)}`]: filterArray,
+      [`${navEngParsing(title)}`]: filterArray,
       completed: updatedComplete,
     };
     localStorage.setItem("todos", JSON.stringify(newLocalStorage));
+  };
+
+  const onClickOpen = (idx: number) => {
+    setIsOpen((prev) => {
+      const newOpen = [...prev];
+      newOpen[idx] = !newOpen[idx];
+      return newOpen;
+    });
   };
 
   return (
@@ -59,12 +64,13 @@ export const List: React.FC<OwnProps> = ({ title }) => {
       <p>할 일</p>
       <Content>
         {list?.map((todo, idx) => (
-          <Todo key={idx} onClick={() => onCompleted(idx)}>
-            <CheckTodo>
+          <Todo key={idx}>
+            <CheckTodo onClick={() => onCompleted(idx)}>
               {todo.complete ? <CircleCheckBig size={20} color="#3F7D58" /> : <Circle size={20} color="#3674B5" />}
               {todo.todo}
             </CheckTodo>
-            <ChevronDown />
+            <ChevronDown onClick={() => onClickOpen(idx)} />
+            <TodoCheckDown idx={idx} title={title} isOpen={isOpen[idx]} />
           </Todo>
         ))}
       </Content>
@@ -88,6 +94,7 @@ const Content = styled.div`
   gap: 10px;
 `;
 const Todo = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   padding: 1rem 1rem 1rem 10px;

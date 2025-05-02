@@ -1,7 +1,7 @@
 export interface TodoItem {
   todo: string;
-  completed: boolean;
-  cancel: number;
+  complete: boolean;
+  cancel: boolean;
   date: string;
 }
 
