@@ -10,6 +10,7 @@ interface OwnProps extends Pick<NavItem, "title"> {}
 export const List: React.FC<OwnProps> = ({ title }) => {
   const getLocalTodos = getLocalStorage("todos");
   const [list, setList] = useState<TodoItem[]>([]);
+  const [complete, setComplete] = useState<TodoItem[]>(getLocalTodos?.completed ?? []);
   const navFilter = (title: string) => {
     switch (title) {
       case "오늘":
@@ -28,22 +29,29 @@ export const List: React.FC<OwnProps> = ({ title }) => {
     setList(getLocalTodos[day]);
   }, [title]);
 
-  const onCheckBoolean = (idx: number) => {
-    // idx 객체 수정
-    let newList = [...list];
-    newList[idx] = {
-      ...newList[idx],
-      completed: !newList[idx].completed,
-    };
-    setList(newList);
+  const onCompleted = (idx: number) => {
+    // 선택된 객체 제외한 나머지 할 일 목록
+    let filterArray = list.filter((_, i) => i !== idx);
+    setList(filterArray);
 
-    // 수정된 객체 요소 localStorage에 담을 객체
-    let newObj = { ...getLocalTodos };
-    newObj = {
-      ...getLocalTodos,
-      [`${navFilter(title)}`]: newList,
+    // 상태 변경(완료, 취소, 미루기) 배열 목록
+    const updatedComplete = [
+      ...complete,
+      (list[idx] = {
+        ...list[idx],
+        complete: !list[idx].complete,
+      }),
+    ];
+    setComplete(updatedComplete);
+
+    // 상태 변경 객체 요소 completed로 옮기기
+    let newLocalStorage = { ...getLocalTodos };
+    newLocalStorage = {
+      ...newLocalStorage,
+      [`${navFilter(title)}`]: filterArray,
+      completed: updatedComplete,
     };
-    window.localStorage.setItem("todos", JSON.stringify(newObj));
+    localStorage.setItem("todos", JSON.stringify(newLocalStorage));
   };
 
   return (
@@ -51,9 +59,9 @@ export const List: React.FC<OwnProps> = ({ title }) => {
       <p>할 일</p>
       <Content>
         {list?.map((todo, idx) => (
-          <Todo key={idx} onClick={() => onCheckBoolean(idx)}>
+          <Todo key={idx} onClick={() => onCompleted(idx)}>
             <CheckTodo>
-              {todo.completed ? <CircleCheckBig size={20} color="#3F7D58" /> : <Circle size={20} color="#3674B5" />}
+              {todo.complete ? <CircleCheckBig size={20} color="#3F7D58" /> : <Circle size={20} color="#3674B5" />}
               {todo.todo}
             </CheckTodo>
             <ChevronDown />

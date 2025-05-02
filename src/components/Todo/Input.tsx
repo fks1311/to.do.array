@@ -27,7 +27,7 @@ export const Input: React.FC<OwnProps> = ({ title }) => {
   const handleKeyDown = (e: React.KeyboardEvent, title: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
       const filter: Filter = navFilter(title);
-      const newTodo = { todo: inputValue, completed: false, cancel: false };
+      const newTodo = { todo: inputValue, complete: false, cancel: false, date: "20250502" };
       setTodos((prev) => {
         const updated = {
           ...prev,
