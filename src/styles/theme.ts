@@ -30,5 +30,3 @@ const theme = {
 };
 
 export default theme;
-// B5B5BD
-// DADAE5

@@ -27,7 +27,7 @@ export const Input: React.FC<OwnProps> = ({ title }) => {
   const handleKeyDown = (e: React.KeyboardEvent, title: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
       const filter: Filter = navFilter(title);
-      const newTodo = { todo: inputValue, completed: 0, cancel: 0 };
+      const newTodo = { todo: inputValue, completed: false, cancel: false };
       setTodos((prev) => {
         const updated = {
           ...prev,
@@ -59,7 +59,7 @@ export const Input: React.FC<OwnProps> = ({ title }) => {
 const Layout = styled.div`
   input {
     width: 100%;
-    padding: 0.7rem 10px;
+    padding: 1rem;
     border: none;
     border-radius: 3px;
     box-sizing: border-box;
