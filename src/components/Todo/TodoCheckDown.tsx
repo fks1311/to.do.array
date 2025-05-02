@@ -30,18 +30,22 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
 
     localStorage.setItem("todos", JSON.stringify(newLocalStorage));
   };
+
   const onDelay = (idx: number) => {
     const filtering = getTitleLocalTodos.filter((_: any, i: number) => i !== idx);
 
     let newLocalStorage = { ...getLocalTodos };
+    let tomorrow = [...newLocalStorage.tomorrow, getTitleLocalTodos[idx]];
+    let week = [...newLocalStorage.week, getTitleLocalTodos[idx]];
     newLocalStorage = {
       ...newLocalStorage,
       [navEngParsing(title)]: filtering,
-      [`tomorrow`]: [...newLocalStorage.tomorrow, getTitleLocalTodos[idx]],
+      [title === "오늘" ? `tomorrow` : `week`]: title === "오늘" ? tomorrow : week,
     };
 
     localStorage.setItem("todos", JSON.stringify(newLocalStorage));
   };
+
   const onDelete = (idx: number) => {
     const filtering = getTitleLocalTodos.filter((_: any, i: number) => i !== idx);
 
@@ -62,10 +66,12 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
             <X size={20} />
             취소
           </li>
-          <li onClick={() => onDelay(idx)}>
-            <ArrowRightToLine size={20} />
-            미루기
-          </li>
+          {title !== "이번주" && (
+            <li onClick={() => onDelay(idx)}>
+              <ArrowRightToLine size={20} />
+              미루기
+            </li>
+          )}
           <li onClick={() => onDelete(idx)}>
             <Trash2 size={20} />
             삭제
