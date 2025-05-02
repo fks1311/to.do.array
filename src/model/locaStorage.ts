@@ -1,7 +1,8 @@
-interface TodoItem {
+export interface TodoItem {
   todo: string;
-  completed: number;
+  completed: boolean;
   cancel: number;
+  date: string;
 }
 
 export interface LocalStorage {
