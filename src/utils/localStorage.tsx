@@ -18,5 +18,3 @@ export const setLocalStorage = <T,>(key: string, value: T): void => {
     console.error(`${key} 저장 중 에러 발생 >> `, error);
   }
 };
-
-export const useLocalStorageSync = () => {};
