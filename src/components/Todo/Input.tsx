@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { NavItem } from "@model/Nav";
 import { todosAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
+import { navEngParsing } from "@utils/todoHelpers";
 
 interface OwnProps extends Pick<NavItem, "title"> {}
 type Filter = "today" | "tomorrow" | "week";
@@ -12,22 +13,10 @@ type Filter = "today" | "tomorrow" | "week";
 export const Input: React.FC<OwnProps> = ({ title }) => {
   const [inputValue, setInputValue] = useState<string>();
   const setTodos = useSetRecoilState(todosAtom);
-  const navFilter = (title: string) => {
-    switch (title) {
-      case "오늘":
-        return "today";
-      case "내일":
-        return "tomorrow";
-      case "이번주":
-        return "week";
-      default:
-        return "today";
-    }
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent, title: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
-      const filter: Filter = navFilter(title);
+      const filter: Filter = navEngParsing(title);
       const newTodo = { todo: inputValue, complete: false, cancel: false, date: "20250502" };
       setTodos((prev) => {
         const updated = {
