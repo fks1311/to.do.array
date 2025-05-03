@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { NavItem } from "@model/Nav";
@@ -6,25 +7,24 @@ import { TodoItem } from "@model/locaStorage";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
 import { TodoCheckDown } from "./TodoCheckDown";
-import { navEngParsing } from "@utils/todoHelpers";
-import { useRecoilValue } from "recoil";
+import { navKorToEngParsing } from "@utils/todoHelpers";
 import { triggerAtom } from "@utils/atom";
 
 interface OwnProps extends Pick<NavItem, "title"> {}
 export const List: React.FC<OwnProps> = ({ title }) => {
-  const getLocalTodos = getLocalStorage("todos");
-  const day = navEngParsing(title);
-  const [list, setList] = useState<TodoItem[]>([]);
-  const [complete, setComplete] = useState<TodoItem[]>(getLocalTodos?.completed ?? []);
-  const [isOpen, setIsOpen] = useState<boolean[] | []>([]);
+  const getStorageTodos = getLocalStorage("todos");
+  const day = navKorToEngParsing(title);
+  const [list, setList] = useState<TodoItem[]>([]); // 현재 title의 할 일 목록
+  const [complete, setComplete] = useState<TodoItem[]>(getStorageTodos?.completed ?? []); // 할 일 목록 완료 여부
+  const [isOpen, setIsOpen] = useState<boolean[] | []>([]); // 상태변경(취소, 미루기, 삭제) 버튼 UI 활성화
   const trigger = useRecoilValue(triggerAtom);
 
   useEffect(() => {
     // todo list 렌더링
-    setList(getLocalTodos[day]);
+    setList(getStorageTodos[day]);
 
     // title에 따라 Array.from 배열 생성(완료/미루기/취소 관련)
-    const todos = getLocalTodos?.[day];
+    const todos = getStorageTodos?.[day];
     const newIsOpenArray = Array.from({ length: todos?.length }, () => false);
     setIsOpen(newIsOpenArray);
   }, [title, trigger]);
@@ -45,10 +45,10 @@ export const List: React.FC<OwnProps> = ({ title }) => {
     setComplete(updatedComplete);
 
     // 상태 변경 객체 요소 completed로 옮기기
-    let newLocalStorage = { ...getLocalTodos };
+    let newLocalStorage = { ...getStorageTodos };
     newLocalStorage = {
       ...newLocalStorage,
-      [`${navEngParsing(title)}`]: filterArray,
+      [`${navKorToEngParsing(title)}`]: filterArray,
       completed: updatedComplete,
     };
     setLocalStorage("todos", newLocalStorage);

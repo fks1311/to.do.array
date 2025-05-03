@@ -1,4 +1,6 @@
-// localstroage 파싱
+/**
+ * localStorage에 있는 항목을 꺼냅니다.
+ */
 export const getLocalStorage = (key: string) => {
   try {
     const storedTodos = localStorage.getItem(key);
@@ -10,7 +12,9 @@ export const getLocalStorage = (key: string) => {
   }
 };
 
-// localstorage 데이터 저장
+/**
+ * localStorage에 key명으로 데이터를 저장합니다.
+ */
 export const setLocalStorage = <T,>(key: string, value: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(value));

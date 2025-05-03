@@ -7,11 +7,11 @@ import { Nav } from "@components/Nav";
 import { Timer } from "@components/Timer/Timer";
 import { Todo } from "@components/Todo/Todo";
 import { basic } from "@model/locaStorage";
-import { todosAtom } from "@utils/atom";
+import { initTodosAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
 
 function App() {
-  const setTodos = useSetRecoilState(todosAtom);
+  const setTodos = useSetRecoilState(initTodosAtom);
 
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
