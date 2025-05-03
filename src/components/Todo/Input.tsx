@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
 
 import { NavItem } from "@model/Nav";
-import { useSetRecoilState } from "recoil";
 import { todosAtom } from "@utils/atom";
+import { setLocalStorage } from "@utils/localStorage";
 
 interface OwnProps extends Pick<NavItem, "title"> {}
 type Filter = "today" | "tomorrow" | "week";
@@ -33,7 +34,7 @@ export const Input: React.FC<OwnProps> = ({ title }) => {
           ...prev,
           [filter]: [...(prev[filter] ?? []), newTodo],
         };
-        window.localStorage.setItem("todos", JSON.stringify(updated));
+        setLocalStorage("todos", updated);
         return updated;
       });
       setInputValue("");

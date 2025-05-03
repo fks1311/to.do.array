@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { X, ArrowRightToLine, Trash2 } from "lucide-react";
 import { navEngParsing, titleLocalTodos } from "@utils/todoHelpers";
-import { getLocalStorage } from "@utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 
 interface OepnType {
   idx: number;
@@ -28,7 +28,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
       [`completed`]: [...newLocalStorage.completed, getTitleLocalTodos[idx]],
     };
 
-    localStorage.setItem("todos", JSON.stringify(newLocalStorage));
+    setLocalStorage("todos", newLocalStorage);
   };
 
   const onDelay = (idx: number) => {
@@ -43,7 +43,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
       [title === "오늘" ? `tomorrow` : `week`]: title === "오늘" ? tomorrow : week,
     };
 
-    localStorage.setItem("todos", JSON.stringify(newLocalStorage));
+    setLocalStorage("todos", newLocalStorage);
   };
 
   const onDelete = (idx: number) => {
@@ -55,7 +55,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
       [navEngParsing(title)]: filtering,
     };
 
-    localStorage.setItem("todos", JSON.stringify(newLocalStorage));
+    setLocalStorage("todos", newLocalStorage);
   };
 
   return (

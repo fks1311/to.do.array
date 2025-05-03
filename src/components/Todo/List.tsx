@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { NavItem } from "@model/Nav";
 import { TodoItem } from "@model/locaStorage";
-import { getLocalStorage } from "@utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
 import { TodoCheckDown } from "./TodoCheckDown";
 import { navEngParsing } from "@utils/todoHelpers";
@@ -22,7 +22,7 @@ export const List: React.FC<OwnProps> = ({ title }) => {
 
     // title에 따라 Array.from 배열 생성(완료/미루기/취소 관련)
     const todos = getLocalTodos?.[day];
-    const newIsOpenArray = Array.from({ length: todos.length }, () => false);
+    const newIsOpenArray = Array.from({ length: todos?.length }, () => false);
     setIsOpen(newIsOpenArray);
   }, [title]);
 
@@ -48,7 +48,7 @@ export const List: React.FC<OwnProps> = ({ title }) => {
       [`${navEngParsing(title)}`]: filterArray,
       completed: updatedComplete,
     };
-    localStorage.setItem("todos", JSON.stringify(newLocalStorage));
+    setLocalStorage("todos", newLocalStorage);
   };
 
   const onClickOpen = (idx: number) => {

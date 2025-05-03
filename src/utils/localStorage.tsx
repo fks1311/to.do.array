@@ -11,6 +11,12 @@ export const getLocalStorage = (key: string) => {
 };
 
 // localstorage 데이터 저장
-export const setLocalStorage = (key: string) => {};
+export const setLocalStorage = <T,>(key: string, value: T): void => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`${key} 저장 중 에러 발생 >> `, error);
+  }
+};
 
 export const useLocalStorageSync = () => {};
