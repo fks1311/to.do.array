@@ -1,10 +1,11 @@
 export interface NavAtom {
-  day: string;
-  count: number;
+  nav: string;
+  pendingCount: number;
+  completedCount?: number;
 }
 
 export interface NavItem {
   icon: React.ReactNode;
   nav: string;
-  todo: number;
+  pendingCount: number;
 }

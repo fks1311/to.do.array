@@ -9,15 +9,17 @@ import { basic, LocalStorage } from "@model/locaStorage";
  * @type {NavAtom}
  * @default
  * {
- *    day:string;
- *    count:number;
+ *    nav:string;
+ *    pendingCount:number;
+ *    completedCount?:number;
  * }
  */
 export const NavState = atom<NavAtom>({
   key: "navState",
   default: {
-    day: "오늘",
-    count: 0,
+    nav: "오늘",
+    pendingCount: 0,
+    completedCount: 0,
   },
 });
 

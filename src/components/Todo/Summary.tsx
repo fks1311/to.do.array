@@ -1,18 +1,23 @@
+import { NavItem } from "@model/Nav";
 import { NavState } from "@utils/atom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { navLocalTodos } from "@utils/todoHelpers";
 
-export const Summary = () => {
+interface OwnProps extends Pick<NavItem, "nav"> {}
+export const Summary: React.FC<OwnProps> = ({ nav }) => {
   const curNav = useRecoilValue(NavState);
 
   return (
     <Layout>
-      <Info>
-        <Title>
-          <Main>{curNav.count}</Main>
-        </Title>
-        <p>완료할 작업</p>
-      </Info>
+      {curNav.nav !== "완료됨" && (
+        <Info>
+          <Title>
+            <Main>{curNav.pendingCount}</Main>
+          </Title>
+          <p>완료할 작업</p>
+        </Info>
+      )}
       <Info>
         <Title>
           <Main>0</Main>
