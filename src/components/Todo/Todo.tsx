@@ -26,7 +26,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 2rem 1rem;
+  padding: 2.5rem 2rem;
   #sel {
     font-size: 2rem;
     color: ${({ theme: { darkmode } }) => darkmode.txt_primary};

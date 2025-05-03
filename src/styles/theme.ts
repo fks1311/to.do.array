@@ -18,7 +18,7 @@ const darkmode: DefaultTheme["darkmode"] = {
   bg: `#121214`,
   bg_elevated: `#9897A1`,
   divider: `#2C2C34`,
-  main_color: `#4734C5`,
+  main_color: `#1F4068`,
   txt_primary: `#F9F9FD`,
   txt_secondary: `#DADAE5`,
 };

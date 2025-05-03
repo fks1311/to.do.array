@@ -33,9 +33,9 @@ export const Summary = () => {
 const Layout = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.3rem;
+  padding: 1.5rem 0.3rem;
   border-radius: 3px;
-  background-color: ${({ theme: { darkmode } }) => darkmode.bg_elevated};
+  background-color: #eeeeee;
 `;
 const Info = styled.div`
   width: 50%;
@@ -45,17 +45,17 @@ const Info = styled.div`
   gap: 5px;
   p {
     font-size: 0.7rem;
-    color: ${({ theme: { darkmode } }) => darkmode.txt_secondary};
+    color: ${({ theme: { darkmode } }) => darkmode.main_color};
   }
 `;
 const Title = styled.div`
   #m {
     font-size: 0.7rem;
-    color: ${({ theme: { darkmode } }) => darkmode.txt_secondary};
+    color: ${({ theme: { darkmode } }) => darkmode.main_color};
   }
 `;
 const Main = styled.span`
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: ${({ theme: { darkmode } }) => darkmode.main_color};
 `;

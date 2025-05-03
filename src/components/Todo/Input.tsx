@@ -50,7 +50,7 @@ export const Input: React.FC<OwnProps> = ({ nav }) => {
 const Layout = styled.div`
   input {
     width: 100%;
-    padding: 1rem;
+    padding: 1.3rem 1rem;
     border: none;
     border-radius: 3px;
     box-sizing: border-box;
