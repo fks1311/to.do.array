@@ -4,7 +4,7 @@ export interface NavAtom {
 }
 
 export interface NavItem {
-  icon: string;
+  icon: React.ReactNode;
   nav: string;
   todo: number;
 }

@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 import { NavAtom, NavItem } from "@model/Nav";
 import { NavState } from "@utils/atom";
-import logo from "@assets/icon.png";
+import { Sun, Sunset, CalendarRange, CalendarCheck } from "lucide-react";
 
 export const Nav: React.FC = () => {
   const navlist: NavItem[] = [
-    { icon: logo, nav: "오늘", todo: 0 },
-    { icon: logo, nav: "내일", todo: 0 },
-    { icon: logo, nav: "이번주", todo: 0 },
-    { icon: logo, nav: "완료됨", todo: 0 },
+    { icon: <Sun color="#67AE6E" />, nav: "오늘", todo: 0 },
+    { icon: <Sunset color="#E9762B" />, nav: "내일", todo: 0 },
+    { icon: <CalendarRange color="#8559A5" />, nav: "이번주", todo: 0 },
+    { icon: <CalendarCheck color="#1F4068" />, nav: "완료됨", todo: 0 },
   ];
   const setCurNav = useSetRecoilState<NavAtom>(NavState);
   const onClickNav = (data: NavItem) => {
@@ -23,7 +23,7 @@ export const Nav: React.FC = () => {
       {navlist.map((data, i) => (
         <NavList key={i} onClick={() => onClickNav(data)}>
           <NavTitle>
-            <img src={data.icon} />
+            {data.icon}
             <div>{data.nav}</div>
           </NavTitle>
           <TodoCount>{data.todo}</TodoCount>
@@ -56,11 +56,7 @@ const NavList = styled.div`
 
 const NavTitle = styled.div`
   display: flex;
-  align-items: center;
-  img {
-    height: 2rem;
-    margin-right: 1rem;
-    border-radius: 50%;
-  }
+  align-items: flex-end;
+  gap: 1rem;
 `;
 const TodoCount = styled.div``;
