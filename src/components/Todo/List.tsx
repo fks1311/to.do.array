@@ -69,7 +69,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
         {list?.map((todo, idx) => (
           <Todo key={idx}>
             <CheckTodo onClick={() => onCompleted(idx)}>
-              {todo.complete ? <CircleCheckBig size={20} color="#3F7D58" /> : <Circle size={20} color="#3674B5" />}
+              {todo.complete ? <CircleCheckBig size={20} color="#0B192C" /> : <Circle size={20} color="#3674B5" />}
               {todo.todo}
             </CheckTodo>
             <ChevronDown onClick={() => onClickOpen(idx)} />
