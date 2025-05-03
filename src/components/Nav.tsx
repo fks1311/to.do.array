@@ -8,14 +8,14 @@ import logo from "@assets/icon.png";
 
 export const Nav: React.FC = () => {
   const navlist: NavItem[] = [
-    { icon: logo, title: "오늘", todo: 0 },
-    { icon: logo, title: "내일", todo: 0 },
-    { icon: logo, title: "이번주", todo: 0 },
-    { icon: logo, title: "완료됨", todo: 0 },
+    { icon: logo, nav: "오늘", todo: 0 },
+    { icon: logo, nav: "내일", todo: 0 },
+    { icon: logo, nav: "이번주", todo: 0 },
+    { icon: logo, nav: "완료됨", todo: 0 },
   ];
   const setCurNav = useSetRecoilState<NavAtom>(NavState);
   const onClickNav = (data: NavItem) => {
-    setCurNav({ day: data.title, count: data.todo });
+    setCurNav({ day: data.nav, count: data.todo });
   };
 
   return (
@@ -24,7 +24,7 @@ export const Nav: React.FC = () => {
         <NavList key={i} onClick={() => onClickNav(data)}>
           <NavTitle>
             <img src={data.icon} />
-            <div>{data.title}</div>
+            <div>{data.nav}</div>
           </NavTitle>
           <TodoCount>{data.todo}</TodoCount>
         </NavList>

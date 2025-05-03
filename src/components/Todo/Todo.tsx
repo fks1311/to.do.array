@@ -7,15 +7,15 @@ import { Input } from "@components/Todo/Input";
 import { NavState } from "@utils/atom";
 
 export const Todo = () => {
-  const title = useRecoilValue(NavState).day;
+  const nav = useRecoilValue(NavState).day;
 
   return (
     <Layout>
-      <p id="sel">{title}</p>
+      <p id="sel">{nav}</p>
       <Main>
         <Summary />
-        <Input title={title} />
-        <List title={title} />
+        <Input nav={nav} />
+        <List nav={nav} />
       </Main>
     </Layout>
   );

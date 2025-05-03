@@ -10,11 +10,11 @@ import { TodoCheckDown } from "./TodoCheckDown";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 import { triggerAtom } from "@utils/atom";
 
-interface OwnProps extends Pick<NavItem, "title"> {}
-export const List: React.FC<OwnProps> = ({ title }) => {
+interface OwnProps extends Pick<NavItem, "nav"> {}
+export const List: React.FC<OwnProps> = ({ nav }) => {
   const getStorageTodos = getLocalStorage("todos");
-  const day = navKorToEngParsing(title);
-  const [list, setList] = useState<TodoItem[]>([]); // 현재 title의 할 일 목록
+  const day = navKorToEngParsing(nav);
+  const [list, setList] = useState<TodoItem[]>([]); // 현재 nav의 할 일 목록
   const [complete, setComplete] = useState<TodoItem[]>(getStorageTodos?.completed ?? []); // 할 일 목록 완료 여부
   const [isOpen, setIsOpen] = useState<boolean[] | []>([]); // 상태변경(취소, 미루기, 삭제) 버튼 UI 활성화
   const trigger = useRecoilValue(triggerAtom);
@@ -23,11 +23,11 @@ export const List: React.FC<OwnProps> = ({ title }) => {
     // todo list 렌더링
     setList(getStorageTodos[day]);
 
-    // title에 따라 Array.from 배열 생성(완료/미루기/취소 관련)
+    // nav에 따라 Array.from 배열 생성(완료/미루기/취소 관련)
     const todos = getStorageTodos?.[day];
     const newIsOpenArray = Array.from({ length: todos?.length }, () => false);
     setIsOpen(newIsOpenArray);
-  }, [title, trigger]);
+  }, [nav, trigger]);
 
   const onCompleted = (idx: number) => {
     // 선택된 객체 제외한 나머지 할 일 목록
@@ -48,7 +48,7 @@ export const List: React.FC<OwnProps> = ({ title }) => {
     let newLocalStorage = { ...getStorageTodos };
     newLocalStorage = {
       ...newLocalStorage,
-      [`${navKorToEngParsing(title)}`]: filterArray,
+      [`${navKorToEngParsing(nav)}`]: filterArray,
       completed: updatedComplete,
     };
     setLocalStorage("todos", newLocalStorage);
@@ -73,7 +73,7 @@ export const List: React.FC<OwnProps> = ({ title }) => {
               {todo.todo}
             </CheckTodo>
             <ChevronDown onClick={() => onClickOpen(idx)} />
-            <TodoCheckDown idx={idx} title={title} isOpen={isOpen[idx]} />
+            <TodoCheckDown idx={idx} nav={nav} isOpen={isOpen[idx]} />
           </Todo>
         ))}
       </Content>

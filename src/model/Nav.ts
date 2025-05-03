@@ -5,6 +5,6 @@ export interface NavAtom {
 
 export interface NavItem {
   icon: string;
-  title: string;
+  nav: string;
   todo: number;
 }

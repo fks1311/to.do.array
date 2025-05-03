@@ -2,36 +2,36 @@ import React from "react";
 import styled from "styled-components";
 
 import { X, ArrowRightToLine, Trash2 } from "lucide-react";
-import { navKorToEngParsing, titleLocalTodos } from "@utils/todoHelpers";
+import { navKorToEngParsing, navLocalTodos } from "@utils/todoHelpers";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { useSetRecoilState } from "recoil";
 import { triggerAtom } from "@utils/atom";
 
 interface OepnType {
   idx: number;
-  title: string;
+  nav: string;
   open?: boolean;
   isOpen?: boolean;
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean[] | []>>;
 }
 
-export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
+export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
   const getStorageTodos = getLocalStorage("todos");
-  const getTitleStorageTodos = titleLocalTodos(title);
+  const getNavStorageTodos = navLocalTodos(nav);
   const setTrigger = useSetRecoilState(triggerAtom);
   const removeAtIndex = (idx: number) => {
-    return getTitleStorageTodos.filter((_: any, i: number) => i !== idx);
+    return getNavStorageTodos.filter((_: any, i: number) => i !== idx);
   };
 
   const onCancel = (idx: number) => {
-    getTitleStorageTodos[idx].complete = true;
+    getNavStorageTodos[idx].complete = true;
     const remainingTodos = removeAtIndex(idx);
 
     let newLocalStorage = { ...getStorageTodos };
     newLocalStorage = {
       ...newLocalStorage,
-      [navKorToEngParsing(title)]: remainingTodos,
-      [`completed`]: [...newLocalStorage.completed, getTitleStorageTodos[idx]],
+      [navKorToEngParsing(nav)]: remainingTodos,
+      [`completed`]: [...newLocalStorage.completed, getNavStorageTodos[idx]],
     };
 
     setLocalStorage("todos", newLocalStorage);
@@ -42,12 +42,12 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
     const remainingTodos = removeAtIndex(idx);
 
     let newLocalStorage = { ...getStorageTodos };
-    let tomorrow = [...newLocalStorage.tomorrow, getTitleStorageTodos[idx]];
-    let week = [...newLocalStorage.week, getTitleStorageTodos[idx]];
+    let tomorrow = [...newLocalStorage.tomorrow, getNavStorageTodos[idx]];
+    let week = [...newLocalStorage.week, getNavStorageTodos[idx]];
     newLocalStorage = {
       ...newLocalStorage,
-      [navKorToEngParsing(title)]: remainingTodos,
-      [title === "오늘" ? `tomorrow` : `week`]: title === "오늘" ? tomorrow : week,
+      [navKorToEngParsing(nav)]: remainingTodos,
+      [nav === "오늘" ? `tomorrow` : `week`]: nav === "오늘" ? tomorrow : week,
     };
 
     setLocalStorage("todos", newLocalStorage);
@@ -60,7 +60,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
     let newLocalStorage = { ...getStorageTodos };
     newLocalStorage = {
       ...newLocalStorage,
-      [navKorToEngParsing(title)]: remainingTodos,
+      [navKorToEngParsing(nav)]: remainingTodos,
     };
 
     setLocalStorage("todos", newLocalStorage);
@@ -75,7 +75,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
             <X size={20} />
             취소
           </li>
-          {title !== "이번주" && (
+          {nav !== "이번주" && (
             <li onClick={() => onDelay(idx)}>
               <ArrowRightToLine size={20} />
               미루기

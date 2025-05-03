@@ -7,15 +7,15 @@ import { initTodosAtom, triggerAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 
-interface OwnProps extends Pick<NavItem, "title"> {}
-export const Input: React.FC<OwnProps> = ({ title }) => {
+interface OwnProps extends Pick<NavItem, "nav"> {}
+export const Input: React.FC<OwnProps> = ({ nav }) => {
   const [inputValue, setInputValue] = useState<string>();
   const setTodos = useSetRecoilState(initTodosAtom);
   const setTrigger = useSetRecoilState(triggerAtom);
 
-  const handleKeyDown = (e: React.KeyboardEvent, title: string) => {
+  const handleKeyDown = (e: React.KeyboardEvent, nav: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
-      const navEngParsing = navKorToEngParsing(title);
+      const navEngParsing = navKorToEngParsing(nav);
       // Fix: date 수정
       const newTodo = { todo: inputValue, complete: false, cancel: false, date: "20250502" };
       setTodos((prev) => {
@@ -40,7 +40,7 @@ export const Input: React.FC<OwnProps> = ({ title }) => {
       <input
         value={inputValue || ""}
         placeholder="엔터키를 눌러 작업을 추가합니다."
-        onKeyDown={(e) => handleKeyDown(e, title)}
+        onKeyDown={(e) => handleKeyDown(e, nav)}
         onChange={onChangeInputValue}
       />
     </Layout>
