@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { X, ArrowRightToLine, Trash2 } from "lucide-react";
 import { navEngParsing, titleLocalTodos } from "@utils/todoHelpers";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
+import { useSetRecoilState } from "recoil";
+import { triggerAtom } from "@utils/atom";
 
 interface OepnType {
   idx: number;
@@ -16,6 +18,7 @@ interface OepnType {
 export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
   const getLocalTodos = getLocalStorage("todos");
   const getTitleLocalTodos = titleLocalTodos(title);
+  const setTrigger = useSetRecoilState(triggerAtom);
 
   const onCancel = (idx: number) => {
     getTitleLocalTodos[idx].complete = true;
@@ -29,6 +32,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
     };
 
     setLocalStorage("todos", newLocalStorage);
+    setTrigger((prev) => prev + 1);
   };
 
   const onDelay = (idx: number) => {
@@ -44,6 +48,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
     };
 
     setLocalStorage("todos", newLocalStorage);
+    setTrigger((prev) => prev + 1);
   };
 
   const onDelete = (idx: number) => {
@@ -56,6 +61,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, title, isOpen }) => {
     };
 
     setLocalStorage("todos", newLocalStorage);
+    setTrigger((prev) => prev + 1);
   };
 
   return (

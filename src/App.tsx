@@ -8,18 +8,18 @@ import { Timer } from "@components/Timer/Timer";
 import { Todo } from "@components/Todo/Todo";
 import { basic } from "@model/locaStorage";
 import { todosAtom } from "@utils/atom";
-import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
+import { setLocalStorage } from "@utils/localStorage";
 
 function App() {
   const setTodos = useSetRecoilState(todosAtom);
 
   useEffect(() => {
-    const storedTodos = getLocalStorage("todos");
+    const storedTodos = localStorage.getItem("todos");
     if (!storedTodos) {
       setLocalStorage("todos", basic);
       setTodos(basic);
     } else {
-      setTodos(storedTodos);
+      setTodos(JSON.parse(storedTodos));
     }
   }, []);
 

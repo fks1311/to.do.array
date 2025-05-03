@@ -14,3 +14,8 @@ export const todosAtom = atom({
   key: "todosState",
   default: basic,
 });
+
+export const triggerAtom = atom({
+  key: "triggerState",
+  default: 0,
+});

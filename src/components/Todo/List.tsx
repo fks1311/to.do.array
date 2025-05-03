@@ -7,6 +7,8 @@ import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
 import { TodoCheckDown } from "./TodoCheckDown";
 import { navEngParsing } from "@utils/todoHelpers";
+import { useRecoilValue } from "recoil";
+import { triggerAtom } from "@utils/atom";
 
 interface OwnProps extends Pick<NavItem, "title"> {}
 export const List: React.FC<OwnProps> = ({ title }) => {
@@ -15,6 +17,7 @@ export const List: React.FC<OwnProps> = ({ title }) => {
   const [list, setList] = useState<TodoItem[]>([]);
   const [complete, setComplete] = useState<TodoItem[]>(getLocalTodos?.completed ?? []);
   const [isOpen, setIsOpen] = useState<boolean[] | []>([]);
+  const trigger = useRecoilValue(triggerAtom);
 
   useEffect(() => {
     // todo list 렌더링
@@ -24,7 +27,7 @@ export const List: React.FC<OwnProps> = ({ title }) => {
     const todos = getLocalTodos?.[day];
     const newIsOpenArray = Array.from({ length: todos?.length }, () => false);
     setIsOpen(newIsOpenArray);
-  }, [title]);
+  }, [title, trigger]);
 
   const onCompleted = (idx: number) => {
     // 선택된 객체 제외한 나머지 할 일 목록

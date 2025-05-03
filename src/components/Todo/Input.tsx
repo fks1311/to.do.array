@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 
 import { NavItem } from "@model/Nav";
-import { todosAtom } from "@utils/atom";
+import { todosAtom, triggerAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
 import { navEngParsing } from "@utils/todoHelpers";
 
@@ -13,6 +13,7 @@ type Filter = "today" | "tomorrow" | "week";
 export const Input: React.FC<OwnProps> = ({ title }) => {
   const [inputValue, setInputValue] = useState<string>();
   const setTodos = useSetRecoilState(todosAtom);
+  const setTrigger = useSetRecoilState(triggerAtom);
 
   const handleKeyDown = (e: React.KeyboardEvent, title: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
@@ -27,6 +28,7 @@ export const Input: React.FC<OwnProps> = ({ title }) => {
         return updated;
       });
       setInputValue("");
+      setTrigger((prev) => prev + 1);
     }
   };
 
