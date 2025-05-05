@@ -7,5 +7,4 @@ export interface NavAtom {
 export interface NavItem {
   icon: React.ReactNode;
   nav: string;
-  pendingCount: number;
 }
