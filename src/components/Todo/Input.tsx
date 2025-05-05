@@ -6,7 +6,7 @@ import { NavItem } from "@model/Nav";
 import { initTodosAtom, triggerAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
 import { navKorToEngParsing } from "@utils/todoHelpers";
-import { getTomorrowDate, Today } from "@utils/data";
+import { getTomorrowDate, Today } from "@utils/date";
 
 interface OwnProps extends Pick<NavItem, "nav"> {}
 export const Input: React.FC<OwnProps> = ({ nav }) => {

@@ -29,6 +29,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
     setIsOpen(newIsOpenArray);
   }, [nav, trigger]);
 
+  // 할 일 완료
   const onCompleted = (idx: number) => {
     // 선택된 객체 제외한 나머지 할 일 목록
     let filterArray = list.filter((_, i) => i !== idx);
@@ -54,6 +55,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
     setLocalStorage("todos", newLocalStorage);
   };
 
+  // 옵션 버튼 UI
   const onClickOpen = (idx: number) => {
     setIsOpen((prev) => {
       const newOpen = [...prev];

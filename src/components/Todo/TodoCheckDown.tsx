@@ -6,7 +6,7 @@ import { navKorToEngParsing, navLocalTodos } from "@utils/todoHelpers";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { useSetRecoilState } from "recoil";
 import { triggerAtom } from "@utils/atom";
-import { getTomorrowDate } from "@utils/data";
+import { getTomorrowDate } from "@utils/date";
 
 interface OepnType {
   idx: number;
