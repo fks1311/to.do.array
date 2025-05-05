@@ -6,7 +6,7 @@ import { NavItem } from "@model/Nav";
 import { initTodosAtom, triggerAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
 import { navKorToEngParsing } from "@utils/todoHelpers";
-import { Today } from "@utils/data";
+import { getTomorrowDate, Today } from "@utils/data";
 
 interface OwnProps extends Pick<NavItem, "nav"> {}
 export const Input: React.FC<OwnProps> = ({ nav }) => {
@@ -17,7 +17,9 @@ export const Input: React.FC<OwnProps> = ({ nav }) => {
   const handleKeyDown = (e: React.KeyboardEvent, nav: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
       const navEngParsing = navKorToEngParsing(nav);
-      const newTodo = { todo: inputValue, complete: false, cancel: false, date: Today() };
+      const date =
+        navEngParsing === "today" ? Today() : navEngParsing === "tomorrow" ? getTomorrowDate(Today()) : Today();
+      const newTodo = { todo: inputValue, complete: false, cancel: false, date: date };
       setTodos((prev) => {
         const updated = {
           ...prev,
