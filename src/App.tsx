@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { Header } from "@components/Head";
@@ -7,11 +7,12 @@ import { Nav } from "@components/Nav";
 import { Timer } from "@components/Timer/Timer";
 import { Todo } from "@components/Todo/Todo";
 import { basic } from "@model/locaStorage";
-import { initTodosAtom } from "@utils/atom";
+import { initTodosAtom, triggerAtom } from "@utils/atom";
 import { setLocalStorage } from "@utils/localStorage";
 
 function App() {
   const setTodos = useSetRecoilState(initTodosAtom);
+  const trigger = useRecoilValue(triggerAtom);
 
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
@@ -21,7 +22,7 @@ function App() {
     } else {
       setTodos(JSON.parse(storedTodos));
     }
-  }, []);
+  }, [trigger]);
 
   return (
     <Layout>

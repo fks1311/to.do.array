@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { NavAtom } from "@model/Nav";
 import { basic, LocalStorage } from "@model/locaStorage";
+import { navLocalTodos } from "./todoHelpers";
 
 /**
  * 네비게이션 상태(atom)를 정의합니다.
@@ -9,15 +10,17 @@ import { basic, LocalStorage } from "@model/locaStorage";
  * @type {NavAtom}
  * @default
  * {
- *    day:string;
- *    count:number;
+ *    nav:string;
+ *    pendingCount:number;
+ *    completedCount?:number;
  * }
  */
 export const NavState = atom<NavAtom>({
   key: "navState",
   default: {
-    day: "오늘",
-    count: 0,
+    nav: "오늘",
+    pendingCount: navLocalTodos("오늘")?.length ?? 0,
+    completedCount: 0,
   },
 });
 

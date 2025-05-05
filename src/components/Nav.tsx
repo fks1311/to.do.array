@@ -5,18 +5,20 @@ import styled from "styled-components";
 import { NavAtom, NavItem } from "@model/Nav";
 import { NavState } from "@utils/atom";
 import { Sun, Sunset, CalendarRange, CalendarCheck } from "lucide-react";
+import { navLocalTodos } from "@utils/todoHelpers";
 
+type NavItemWithPending = NavItem & Pick<NavAtom, "pendingCount">;
 export const Nav: React.FC = () => {
-  const navlist: NavItem[] = [
-    { icon: <Sun color="#67AE6E" />, nav: "오늘", todo: 0 },
-    { icon: <Sunset color="#E9762B" />, nav: "내일", todo: 0 },
-    { icon: <CalendarRange color="#8559A5" />, nav: "이번주", todo: 0 },
-    { icon: <CalendarCheck color="#1F4068" />, nav: "완료됨", todo: 0 },
-  ];
   const setCurNav = useSetRecoilState<NavAtom>(NavState);
-  const onClickNav = (data: NavItem) => {
-    setCurNav({ day: data.nav, count: data.todo });
+  const onClickNav = (data: NavAtom) => {
+    setCurNav({ nav: data.nav, pendingCount: data.pendingCount });
   };
+  const navlist: NavItemWithPending[] = [
+    { icon: <Sun color="#67AE6E" />, nav: "오늘", pendingCount: navLocalTodos("오늘")?.length ?? 0 },
+    { icon: <Sunset color="#E9762B" />, nav: "내일", pendingCount: navLocalTodos("내일")?.length ?? 0 },
+    { icon: <CalendarRange color="#8559A5" />, nav: "이번주", pendingCount: navLocalTodos("이번주")?.length ?? 0 },
+    { icon: <CalendarCheck color="#1F4068" />, nav: "완료됨", pendingCount: navLocalTodos("완료됨")?.length ?? 0 },
+  ];
 
   return (
     <Layout>
@@ -26,7 +28,7 @@ export const Nav: React.FC = () => {
             {data.icon}
             <div>{data.nav}</div>
           </NavTitle>
-          <TodoCount>{data.todo}</TodoCount>
+          <TodoCount>{data.pendingCount}</TodoCount>
         </NavList>
       ))}
     </Layout>
