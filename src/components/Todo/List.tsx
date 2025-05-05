@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { NavItem } from "@model/Nav";
@@ -17,7 +17,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
   const [list, setList] = useState<TodoItem[]>([]); // 현재 nav의 할 일 목록
   const [complete, setComplete] = useState<TodoItem[]>(getStorageTodos?.completed ?? []); // 할 일 목록 완료 여부
   const [isOpen, setIsOpen] = useState<boolean[] | []>([]); // 상태변경(취소, 미루기, 삭제) 버튼 UI 활성화
-  const trigger = useRecoilValue(triggerAtom);
+  const [trigger, setTrigger] = useRecoilState(triggerAtom);
 
   useEffect(() => {
     // todo list 렌더링
@@ -53,6 +53,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
       completed: updatedComplete,
     };
     setLocalStorage("todos", newLocalStorage);
+    setTrigger((prev) => prev + 1);
   };
 
   // 옵션 버튼 UI
