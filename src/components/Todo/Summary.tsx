@@ -1,9 +1,20 @@
-import { NavState } from "@utils/atom";
-import { useRecoilValue } from "recoil";
+import { useEffect } from "react";
 import styled from "styled-components";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { NavState, triggerAtom } from "@utils/atom";
+import { navLocalTodos } from "@utils/todoHelpers";
 
-export const Summary = () => {
-  const curNav = useRecoilValue(NavState);
+type OwnProps = { nav: string };
+export const Summary: React.FC<OwnProps> = ({ nav }) => {
+  const [curNav, setCurNav] = useRecoilState(NavState);
+  const trigger = useRecoilValue(triggerAtom);
+
+  useEffect(() => {
+    setCurNav({
+      nav: nav,
+      pendingCount: navLocalTodos(nav).length,
+    });
+  }, [trigger]);
 
   return (
     <Layout>

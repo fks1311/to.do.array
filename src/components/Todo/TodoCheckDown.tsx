@@ -6,6 +6,7 @@ import { navKorToEngParsing, navLocalTodos } from "@utils/todoHelpers";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { useSetRecoilState } from "recoil";
 import { triggerAtom } from "@utils/atom";
+import { getTomorrowDate } from "@utils/data";
 
 interface OepnType {
   idx: number;
@@ -23,8 +24,9 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
     return getNavStorageTodos.filter((_: any, i: number) => i !== idx);
   };
 
+  // 할 일 취소
   const onCancel = (idx: number) => {
-    getNavStorageTodos[idx].complete = true;
+    getNavStorageTodos[idx].cancel = true;
     const remainingTodos = removeAtIndex(idx);
 
     let newLocalStorage = { ...getStorageTodos };
@@ -38,11 +40,18 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
     setTrigger((prev) => prev + 1);
   };
 
+  // 할 일 미루기
   const onDelay = (idx: number) => {
     const remainingTodos = removeAtIndex(idx);
 
     let newLocalStorage = { ...getStorageTodos };
-    let tomorrow = [...newLocalStorage.tomorrow, getNavStorageTodos[idx]];
+
+    // 미루기 시 날짜 변경
+    let tomorrowDate = {
+      ...getNavStorageTodos[idx],
+      [`date`]: getTomorrowDate(getNavStorageTodos[idx].date),
+    };
+    let tomorrow = [...newLocalStorage.tomorrow, tomorrowDate]; // 여기만 날짜 변경 필요
     let week = [...newLocalStorage.week, getNavStorageTodos[idx]];
     newLocalStorage = {
       ...newLocalStorage,
@@ -54,6 +63,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
     setTrigger((prev) => prev + 1);
   };
 
+  // 할 일 삭제
   const onDelete = (idx: number) => {
     const remainingTodos = removeAtIndex(idx);
 
