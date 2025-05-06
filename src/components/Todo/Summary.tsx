@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { NavState, triggerAtom } from "@utils/atom";
-import { navLocalTodos } from "@utils/todoHelpers";
+import { getCompletedTodosByDate, navLocalTodos } from "@utils/todoHelpers";
 
 type OwnProps = { nav: string };
 export const Summary: React.FC<OwnProps> = ({ nav }) => {
@@ -13,6 +13,7 @@ export const Summary: React.FC<OwnProps> = ({ nav }) => {
     setCurNav({
       nav: nav,
       pendingCount: navLocalTodos(nav).length,
+      completedCount: getCompletedTodosByDate(curNav.nav),
     });
   }, [trigger]);
 
@@ -35,7 +36,7 @@ export const Summary: React.FC<OwnProps> = ({ nav }) => {
       </Info>
       <Info>
         <Title>
-          <Main>0</Main>
+          <Main>{curNav.completedCount}</Main>
         </Title>
         <p>완료한 작업</p>
       </Info>

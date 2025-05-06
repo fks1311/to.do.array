@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { NavAtom, NavItem } from "@model/Nav";
 import { NavState } from "@utils/atom";
 import { Sun, Sunset, CalendarRange, CalendarCheck } from "lucide-react";
-import { navLocalTodos } from "@utils/todoHelpers";
+import { getCompletedTodosByDate, navLocalTodos } from "@utils/todoHelpers";
 
 type NavItemWithPending = NavItem & Pick<NavAtom, "pendingCount">;
 export const Nav: React.FC = () => {
   const setCurNav = useSetRecoilState<NavAtom>(NavState);
   const onClickNav = (data: NavAtom) => {
-    setCurNav({ nav: data.nav, pendingCount: data.pendingCount });
+    setCurNav({ nav: data.nav, pendingCount: data.pendingCount, completedCount: getCompletedTodosByDate(data.nav) });
   };
   const navlist: NavItemWithPending[] = [
     { icon: <Sun color="#67AE6E" />, nav: "오늘", pendingCount: navLocalTodos("오늘")?.length ?? 0 },

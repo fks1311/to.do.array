@@ -1,5 +1,6 @@
 import { TodoItem } from "@model/locaStorage";
 import { getLocalStorage } from "./localStorage";
+import { getTomorrowDate, Today } from "./date";
 
 /**
  * 한글로 들어오는 nav 항목을 영어로 파싱합니다.
@@ -36,4 +37,20 @@ export const navLocalTodos = (nav: string): TodoItem[] => {
   const day = navKorToEngParsing(nav);
 
   return getLocalTodos[day];
+};
+
+/**
+ * Nav별 완료한 작업 목록 갯수를 반환합니다.
+ *
+ * @param nav
+ * @returns {number} nav별 완료한 작업 목록 갯수
+ */
+export const getCompletedTodosByDate = (nav: string): number => {
+  const getCompletedLocalTodos = getLocalStorage("todos")?.completed ?? [];
+  const curNav = nav === "오늘" ? Today() : nav === "내일" ? getTomorrowDate(Today()) : "";
+
+  const navCompletedTodos = curNav
+    ? getCompletedLocalTodos.filter((data: { date: string }) => data.date === curNav)
+    : getCompletedLocalTodos;
+  return navCompletedTodos?.length;
 };
