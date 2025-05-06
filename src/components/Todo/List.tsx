@@ -9,6 +9,7 @@ import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
 import { TodoCheckDown } from "./TodoCheckDown";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 import { triggerAtom } from "@utils/atom";
+import { Today } from "@utils/date";
 
 interface OwnProps extends Pick<NavItem, "nav"> {}
 export const List: React.FC<OwnProps> = ({ nav }) => {
@@ -40,6 +41,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
       ...complete,
       (list[idx] = {
         ...list[idx],
+        date: nav === "내일" ? Today() : list[idx].date,
         complete: !list[idx].complete,
       }),
     ];
@@ -52,6 +54,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
       [`${navKorToEngParsing(nav)}`]: filterArray,
       completed: updatedComplete,
     };
+
     setLocalStorage("todos", newLocalStorage);
     setTrigger((prev) => prev + 1);
   };
