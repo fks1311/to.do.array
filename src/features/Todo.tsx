@@ -3,8 +3,9 @@ import styled from "styled-components";
 
 import { List } from "@components/Todo/List";
 import { Summary } from "@components/Todo/Summary";
-import { Input } from "@components/Todo/Input";
+import { Input } from "@components/Todo/input/Input";
 import { NavState } from "@utils/atom";
+import { CompletedList } from "../components/Todo/CompletedList";
 
 export const Todo = () => {
   const nav = useRecoilValue(NavState).nav;
@@ -13,9 +14,15 @@ export const Todo = () => {
     <Layout>
       <p id="sel">{nav}</p>
       <Main>
-        <Summary nav={nav} />
-        <Input nav={nav} />
-        <List nav={nav} />
+        {nav === "완료됨" ? (
+          <CompletedList />
+        ) : (
+          <>
+            <Summary nav={nav} />
+            <Input nav={nav} />
+            <List nav={nav} />
+          </>
+        )}
       </Main>
     </Layout>
   );

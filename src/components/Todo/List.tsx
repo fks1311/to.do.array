@@ -6,7 +6,7 @@ import { NavItem } from "@model/Nav";
 import { TodoItem } from "@model/locaStorage";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
-import { TodoCheckDown } from "./TodoCheckDown";
+import { TodoCheckDown } from "./button/TodoCheckDown";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 import { triggerAtom } from "@utils/atom";
 import { Today } from "@utils/date";
