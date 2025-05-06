@@ -6,7 +6,7 @@ import { navKorToEngParsing, navLocalTodos } from "@utils/todoHelpers";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { useSetRecoilState } from "recoil";
 import { triggerAtom } from "@utils/atom";
-import { getTomorrowDate } from "@utils/date";
+import { getTomorrowDate, Today } from "@utils/date";
 
 interface OepnType {
   idx: number;
@@ -23,10 +23,12 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
   const removeAtIndex = (idx: number) => {
     return getNavStorageTodos.filter((_: any, i: number) => i !== idx);
   };
+  console.log(nav);
 
   // 할 일 취소
   const onCancel = (idx: number) => {
     getNavStorageTodos[idx].cancel = true;
+    getNavStorageTodos[idx].date = nav === "내일" ? Today() : getNavStorageTodos[idx].date;
     const remainingTodos = removeAtIndex(idx);
 
     let newLocalStorage = { ...getStorageTodos };
