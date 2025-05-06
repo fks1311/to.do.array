@@ -23,7 +23,6 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
   const removeAtIndex = (idx: number) => {
     return getNavStorageTodos.filter((_: any, i: number) => i !== idx);
   };
-  console.log(nav);
 
   // 할 일 취소
   const onCancel = (idx: number) => {
