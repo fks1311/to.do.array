@@ -16,6 +16,8 @@ export const Input: React.FC<OwnProps> = ({ nav }) => {
 
   const handleKeyDown = (e: React.KeyboardEvent, nav: string) => {
     if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
+      if (!inputValue?.trim()) return; // 공백이거나 미입력 방지
+
       const navEngParsing = navKorToEngParsing(nav);
       const date =
         navEngParsing === "today" ? Today() : navEngParsing === "tomorrow" ? getTomorrowDate(Today()) : Today();
