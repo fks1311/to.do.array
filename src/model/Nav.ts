@@ -1,6 +1,6 @@
 export interface NavAtom {
   nav: string;
-  pendingCount: number;
+  pendingCount?: number;
   completedCount?: number;
 }
 

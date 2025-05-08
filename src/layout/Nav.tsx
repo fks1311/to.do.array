@@ -17,7 +17,7 @@ export const Nav: React.FC = () => {
     { icon: <Sun color="#67AE6E" />, nav: "오늘", pendingCount: navLocalTodos("오늘")?.length ?? 0 },
     { icon: <Sunset color="#E9762B" />, nav: "내일", pendingCount: navLocalTodos("내일")?.length ?? 0 },
     { icon: <CalendarRange color="#8559A5" />, nav: "이번주", pendingCount: navLocalTodos("이번주")?.length ?? 0 },
-    { icon: <CalendarCheck color="#1F4068" />, nav: "완료됨", pendingCount: navLocalTodos("완료됨")?.length ?? 0 },
+    { icon: <CalendarCheck color="#1F4068" />, nav: "완료됨" },
   ];
 
   return (
