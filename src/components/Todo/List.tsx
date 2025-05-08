@@ -75,7 +75,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
         {list?.map((todo, idx) => (
           <Todo key={idx}>
             <CheckTodo onClick={() => onCompleted(idx)}>
-              {todo.complete ? <CircleCheckBig size={20} color="#0B192C" /> : <Circle size={20} color="#3674B5" />}
+              {!todo.complete && <Circle size={20} color="#3674B5" />}
               {todo.todo}
             </CheckTodo>
             <ChevronDown onClick={() => onClickOpen(idx)} />
@@ -97,12 +97,12 @@ const Layout = styled.div`
   }
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
-const Todo = styled.div`
+export const Todo = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -111,7 +111,7 @@ const Todo = styled.div`
   background-color: white;
   cursor: pointer;
 `;
-const CheckTodo = styled.div`
+export const CheckTodo = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
