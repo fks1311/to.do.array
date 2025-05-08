@@ -79,7 +79,7 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
               {todo.todo}
             </CheckTodo>
             <ChevronDown onClick={() => onClickOpen(idx)} />
-            <TodoCheckDown idx={idx} nav={nav} isOpen={isOpen[idx]} />
+            <TodoCheckDown idx={idx} nav={nav} isOpen={isOpen[idx]} setIsOpen={setIsOpen} />
           </Todo>
         ))}
       </Content>

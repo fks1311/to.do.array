@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 
 import { X, ArrowRightToLine, Trash2 } from "lucide-react";
@@ -7,6 +7,7 @@ import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { useSetRecoilState } from "recoil";
 import { triggerAtom } from "@utils/atom";
 import { getTomorrowDate, Today } from "@utils/date";
+import { useClickOutside } from "hooks/useClickOutside";
 
 interface OepnType {
   idx: number;
@@ -16,13 +17,25 @@ interface OepnType {
   setIsOpen?: React.Dispatch<React.SetStateAction<boolean[] | []>>;
 }
 
-export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
+export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen, setIsOpen }) => {
+  const ref = useRef(null);
   const getStorageTodos = getLocalStorage("todos");
   const getNavStorageTodos = navLocalTodos(nav);
   const setTrigger = useSetRecoilState(triggerAtom);
   const removeAtIndex = (idx: number) => {
     return getNavStorageTodos.filter((_: any, i: number) => i !== idx);
   };
+
+  // 옵션 메뉴 외부 클릭 시 닫힘
+  useClickOutside(ref, () => {
+    if (typeof setIsOpen === "function") {
+      setIsOpen((prev) => {
+        const updated = [...prev];
+        updated[idx] = false;
+        return updated;
+      });
+    }
+  });
 
   // 할 일 취소
   const onCancel = (idx: number) => {
@@ -81,7 +94,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen }) => {
   return (
     <>
       {isOpen && (
-        <Layout>
+        <Layout ref={ref}>
           <li onClick={() => onCancel(idx)}>
             <X size={20} />
             취소
