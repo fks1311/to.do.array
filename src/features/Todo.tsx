@@ -7,20 +7,37 @@ import { Input } from "@components/Todo/input/Input";
 import { NavState } from "@utils/atom";
 import { CompletedList } from "../components/Todo/CompletedList";
 
+/**
+ * 내일 -> 완료할 작업 갯수, summary 제거
+ * 완료됨 -> 완료한 작업 갯수, summary 제거
+ */
 export const Todo = () => {
-  const nav = useRecoilValue(NavState).nav;
+  const nav = useRecoilValue(NavState);
+
+  const NavTodoInfo = () => {
+    const txt =
+      nav.nav === "내일"
+        ? `완료할 작업 ${nav.pendingCount}`
+        : nav.nav === "완료됨"
+        ? `완료한 작업 ${nav.completedCount}`
+        : null;
+    return <TodoInfo>{txt}</TodoInfo>;
+  };
 
   return (
     <Layout>
-      <p id="sel">{nav}</p>
+      <Title>
+        {nav.nav}
+        <NavTodoInfo />
+      </Title>
       <Main>
-        {nav === "완료됨" ? (
+        {nav.nav === "완료됨" ? (
           <CompletedList />
         ) : (
           <>
-            <Summary nav={nav} />
-            <Input nav={nav} />
-            <List nav={nav} />
+            <Summary nav={nav.nav} />
+            <Input nav={nav.nav} />
+            <List nav={nav.nav} />
           </>
         )}
       </Main>
@@ -34,14 +51,21 @@ const Layout = styled.div`
   flex-direction: column;
   gap: 2rem;
   padding: 2.5rem 2rem;
-  #sel {
-    font-size: 2rem;
-    color: ${({ theme: { darkmode } }) => darkmode.txt_primary};
-  }
 `;
 
+const Title = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+  font-size: 2rem;
+  color: ${({ theme: { darkmode } }) => darkmode.txt_primary};
+`;
+const TodoInfo = styled.p`
+  font-size: 1rem;
+`;
 const Main = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  padding-bottom: 1rem;
 `;

@@ -18,29 +18,31 @@ export const Summary: React.FC<OwnProps> = ({ nav }) => {
   }, [trigger]);
 
   return (
-    <Layout>
-      {curNav.nav !== "완료됨" && (
-        <Info>
-          <Title>
-            <Main>{curNav.pendingCount}</Main>
-          </Title>
-          <p>완료할 작업</p>
-        </Info>
+    <>
+      {nav !== "내일" && (
+        <Layout>
+          <Info>
+            <Title>
+              <Main>{curNav.pendingCount}</Main>
+            </Title>
+            <p>완료할 작업</p>
+          </Info>
+          <Info>
+            <Title>
+              <Main>0</Main>
+              <span id="m">분</span>
+            </Title>
+            <p>완료한 시간</p>
+          </Info>
+          <Info>
+            <Title>
+              <Main>{curNav.completedCount}</Main>
+            </Title>
+            <p>완료한 작업</p>
+          </Info>
+        </Layout>
       )}
-      <Info>
-        <Title>
-          <Main>0</Main>
-          <span id="m">분</span>
-        </Title>
-        <p>완료한 시간</p>
-      </Info>
-      <Info>
-        <Title>
-          <Main>{curNav.completedCount}</Main>
-        </Title>
-        <p>완료한 작업</p>
-      </Info>
-    </Layout>
+    </>
   );
 };
 
