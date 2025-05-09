@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "DS-DIGI";
+  src: url("/src/styles/font/DS-DIGI.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "DS-DIGIB";
+  src: url("/src/styles/font/DS-DIGIB.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "DS-DIGII";
+  src: url("/src/styles/font/DS-DIGII.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "DS-DIGIT";
+  src: url("/src/styles/font/DS-DIGIT.TTF") format("truetype");
+}
