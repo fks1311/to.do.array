@@ -15,10 +15,17 @@ export const getLocalStorage = (key: string) => {
 /**
  * localStorage에 key명으로 데이터를 저장합니다.
  */
-export const setLocalStorage = <T,>(key: string, value: T): void => {
+export const setLocalStorage = <T>(key: string, value: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.error(`${key} 저장 중 에러 발생 >> `, error);
   }
+};
+
+/**
+ * localStorage에 key가 있는지 확인합니다.
+ */
+export const hasLocalStorageKey = (key: string) => {
+  return localStorage.getItem(key) !== null;
 };
