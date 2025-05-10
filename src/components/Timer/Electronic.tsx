@@ -1,13 +1,26 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import useInterval from "hooks/useInterval";
+import { getLocalStorage, hasLocalStorageKey, setLocalStorage } from "@utils/localStorage";
 import "@styles/font/font.css";
 
 export const Electronic: React.FC = () => {
   const [minutes, setMinutes] = useState<number>(25);
   const [seconds, setSeconds] = useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [shouldContinue, setShouldContinue] = useState<boolean>(false);
 
+  // localStorageTimer 초기값 설정
+  useEffect(() => {
+    const getStorageTimer = getLocalStorage("timer");
+    if (hasLocalStorageKey("timer") === false) {
+      setLocalStorage("timer", { default: minutes, today: 0, weekend: 0 });
+    } else {
+      setLocalStorage("timer", getStorageTimer);
+    }
+  }, []);
+
+  // 초 시간
   const tick = useCallback(() => {
     if (minutes === 0 && seconds === 0) {
       setIsRunning(false);
@@ -21,8 +34,25 @@ export const Electronic: React.FC = () => {
 
   useInterval(isRunning, tick);
 
-  const onReset = () => {
+  // 완전 정지
+  const handleStop = () => {
+    const defaultMinutes = getLocalStorage("timer")?.default;
+
+    let current = defaultMinutes - (minutes + 1);
+    let defaultToday = getLocalStorage("timer")?.today;
+    defaultToday += current;
+
+    let defaultWeekend = getLocalStorage("timer")?.weekend;
+    defaultWeekend += defaultToday;
+
+    let newDuration = {
+      ...getLocalStorage("timer"),
+      today: defaultToday < 0 ? 0 : defaultToday,
+    };
+
+    setLocalStorage("timer", newDuration);
     setIsRunning(false);
+    setShouldContinue(false);
     setMinutes(25);
     setSeconds(0);
   };
@@ -35,11 +65,23 @@ export const Electronic: React.FC = () => {
         </h2>
       </Clock>
       <ButtonContainer>
-        <div id="inner-container">
-          <button onClick={() => setIsRunning(true)}>시작</button>
-          <button onClick={() => setIsRunning(false)}>일시정지</button>
-        </div>
-        <button onClick={() => onReset()}>초기화</button>
+        {!isRunning && !shouldContinue && <button onClick={() => setIsRunning(true)}>집중 시작하기</button>}
+        {isRunning && (
+          <button
+            onClick={() => {
+              setIsRunning(false);
+              setShouldContinue(true);
+            }}
+          >
+            일시 정지
+          </button>
+        )}
+        {shouldContinue && !isRunning && (
+          <>
+            <button onClick={() => setIsRunning(true)}>계속</button>
+            <button onClick={handleStop}>정지</button>
+          </>
+        )}
       </ButtonContainer>
     </Layout>
   );
@@ -79,6 +121,7 @@ const ButtonContainer = styled.div`
     cursor: pointer;
     border: none;
     outline: none;
+    border-radius: 10px;
     background-color: white;
     &:hover {
       background-color: #f5f7f8;
