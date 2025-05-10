@@ -3,12 +3,15 @@ import styled from "styled-components";
 import useInterval from "hooks/useInterval";
 import { getLocalStorage, hasLocalStorageKey, setLocalStorage } from "@utils/localStorage";
 import "@styles/font/font.css";
+import { useSetRecoilState } from "recoil";
+import { triggerAtom } from "@utils/atom";
 
 export const Electronic: React.FC = () => {
   const [minutes, setMinutes] = useState<number>(25);
   const [seconds, setSeconds] = useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [shouldContinue, setShouldContinue] = useState<boolean>(false);
+  const setTrigger = useSetRecoilState(triggerAtom);
 
   // localStorageTimer 초기값 설정
   useEffect(() => {
@@ -51,6 +54,7 @@ export const Electronic: React.FC = () => {
     };
 
     setLocalStorage("timer", newDuration);
+    setTrigger((prev) => prev + 1);
     setIsRunning(false);
     setShouldContinue(false);
     setMinutes(25);
