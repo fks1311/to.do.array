@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { NavState, triggerAtom } from "@utils/atom";
 import { getCompletedTodosByDate, navLocalTodos } from "@utils/todoHelpers";
+import { getLocalStorage } from "@utils/localStorage";
 
 type OwnProps = { nav: string };
 export const Summary: React.FC<OwnProps> = ({ nav }) => {
   const [curNav, setCurNav] = useRecoilState(NavState);
+  const getStorageTimer = getLocalStorage("timer");
   const trigger = useRecoilValue(triggerAtom);
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export const Summary: React.FC<OwnProps> = ({ nav }) => {
           </Info>
           <Info>
             <Title>
-              <Main>0</Main>
+              <Main>{nav === "오늘" ? getStorageTimer?.today : getStorageTimer?.weekend}</Main>
               <span id="m">분</span>
             </Title>
             <p>완료한 시간</p>
