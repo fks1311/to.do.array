@@ -1,11 +1,12 @@
+import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { List } from "@components/Todo/List";
 import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/input/Input";
+import { CompletedList } from "@components/Todo/CompletedList";
 import { NavState } from "@utils/atom";
-import { CompletedList } from "../components/Todo/CompletedList";
 
 /**
  * 내일 -> 완료할 작업 갯수, summary 제거
@@ -13,14 +14,16 @@ import { CompletedList } from "../components/Todo/CompletedList";
  */
 export const Todo = () => {
   const nav = useRecoilValue(NavState);
+  const [editableIndex, setEditableIndex] = useState<number | null>(null);
 
-  const NavTodoInfo = () => {
+  const NavTodoInfo: React.FC = () => {
     const txt =
       nav.nav === "내일"
         ? `완료할 작업 ${nav.pendingCount}`
         : nav.nav === "완료됨"
         ? `완료한 작업 ${nav.completedCount}`
         : null;
+
     return <TodoInfo>{txt}</TodoInfo>;
   };
 
@@ -36,8 +39,8 @@ export const Todo = () => {
         ) : (
           <>
             <Summary nav={nav.nav} />
-            <Input nav={nav.nav} />
-            <List nav={nav.nav} />
+            <Input nav={nav.nav} editableIndex={editableIndex} setEditableIndex={setEditableIndex} />
+            <List nav={nav.nav} editableIndex={editableIndex} setEditableIndex={setEditableIndex} />
           </>
         )}
       </Main>

@@ -5,14 +5,22 @@ import styled from "styled-components";
 import { NavItem } from "@model/Nav";
 import { TodoItem } from "@model/locaStorage";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
-import { Circle, CircleCheckBig, ChevronDown } from "lucide-react";
+import { Circle, ChevronDown } from "lucide-react";
 import { TodoCheckDown } from "./button/TodoCheckDown";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 import { triggerAtom } from "@utils/atom";
 import { Today } from "@utils/date";
+import { Input } from "./input/Input";
 
-interface OwnProps extends Pick<NavItem, "nav"> {}
-export const List: React.FC<OwnProps> = ({ nav }) => {
+interface OwnProps extends Pick<NavItem, "nav"> {
+  editableIndex: number | null;
+  setEditableIndex: React.Dispatch<React.SetStateAction<number | null>>;
+}
+interface TodoStyleProps {
+  $edit?: number | null;
+  idx?: number;
+}
+export const List: React.FC<OwnProps> = ({ nav, editableIndex, setEditableIndex }) => {
   const getStorageTodos = getLocalStorage("todos");
   const day = navKorToEngParsing(nav);
   const [list, setList] = useState<TodoItem[]>([]); // 현재 nav의 할 일 목록
@@ -73,13 +81,19 @@ export const List: React.FC<OwnProps> = ({ nav }) => {
       <p>할 일</p>
       <Content>
         {list?.map((todo, idx) => (
-          <Todo key={idx}>
-            <CheckTodo onClick={() => onCompleted(idx)}>
-              {!todo.complete && <Circle size={20} color="#3674B5" />}
-              {todo.todo}
-            </CheckTodo>
-            <ChevronDown onClick={() => onClickOpen(idx)} />
-            <TodoCheckDown idx={idx} nav={nav} isOpen={isOpen[idx]} setIsOpen={setIsOpen} />
+          <Todo key={idx} $edit={editableIndex} idx={idx}>
+            {editableIndex === idx ? (
+              <Input nav={nav} editableIndex={editableIndex} setEditableIndex={setEditableIndex} />
+            ) : (
+              <>
+                <CheckTodo onClick={() => setEditableIndex(idx)}>
+                  {!todo.complete && <Circle size={20} color="#3674B5" onClick={() => onCompleted(idx)} />}
+                  {todo.todo}
+                </CheckTodo>
+                <ChevronDown onClick={() => onClickOpen(idx)} />
+                <TodoCheckDown idx={idx} nav={nav} isOpen={isOpen[idx]} setIsOpen={setIsOpen} />
+              </>
+            )}
           </Todo>
         ))}
       </Content>
@@ -102,11 +116,11 @@ export const Content = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
-export const Todo = styled.div`
+export const Todo = styled.div<TodoStyleProps>`
   position: relative;
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1rem 1rem 10px;
+  padding: ${({ $edit, idx }) => ($edit === idx ? "0px" : "1rem 1rem 1rem 10px")};
   border-radius: 3px;
   background-color: white;
   cursor: pointer;
@@ -116,3 +130,7 @@ export const CheckTodo = styled.div`
   align-items: center;
   gap: 10px;
 `;
+
+// padding: ${({ $edit, idx }) => ($edit === idx ? "0px" : "1rem 1rem 1rem 10px")};
+// ${({ $edit, idx }) => ($edit === idx ? `padding: 0px;` : `padding: 1rem 1rem 1rem 10px;`)}
+// padding: 1rem 1rem 1rem 10px;

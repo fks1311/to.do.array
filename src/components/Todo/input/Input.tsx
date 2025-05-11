@@ -4,28 +4,50 @@ import { useSetRecoilState } from "recoil";
 
 import { NavItem } from "@model/Nav";
 import { initTodosAtom, triggerAtom } from "@utils/atom";
-import { setLocalStorage } from "@utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 import { getTomorrowDate, Today } from "@utils/date";
 
-interface OwnProps extends Pick<NavItem, "nav"> {}
-export const Input: React.FC<OwnProps> = ({ nav }) => {
-  const [inputValue, setInputValue] = useState<string>();
+interface OwnProps extends Pick<NavItem, "nav"> {
+  editableIndex: number | null;
+  setEditableIndex?: React.Dispatch<React.SetStateAction<number | null>>;
+}
+export const Input: React.FC<OwnProps> = ({ nav, editableIndex }) => {
+  const [inputValue, setInputValue] = useState<string>(
+    (editableIndex !== null && getLocalStorage("todos")?.[navKorToEngParsing(nav)]?.[editableIndex])?.todo ?? 0
+  );
   const setTodos = useSetRecoilState(initTodosAtom);
   const setTrigger = useSetRecoilState(triggerAtom);
 
   const handleKeyDown = (e: React.KeyboardEvent, nav: string) => {
-    if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
+    const navKey = navKorToEngParsing(nav);
+
+    if (e.code === "Enter" && e.nativeEvent.isComposing === false && editableIndex !== null) {
+      const localStorageTodos = getLocalStorage("todos")?.[navKey] ?? [];
+      // 입력된 todo 내용 수정
+      const updateInput = localStorageTodos.map((data: {}, i: number) => {
+        return i === editableIndex ? { ...data, todo: inputValue } : data;
+      });
+
+      setTodos((prev) => {
+        const updated = {
+          ...prev,
+          [navKey]: updateInput,
+        };
+        setLocalStorage("todos", updated);
+        return updated;
+      });
+      setTrigger((prev) => prev + 1);
+    } else if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
+      // 새로운 todo 추가
       if (!inputValue?.trim()) return; // 공백이거나 미입력 방지
 
-      const navEngParsing = navKorToEngParsing(nav);
-      const date =
-        navEngParsing === "today" ? Today() : navEngParsing === "tomorrow" ? getTomorrowDate(Today()) : Today();
+      const date = navKey === "today" ? Today() : navKey === "tomorrow" ? getTomorrowDate(Today()) : Today();
       const newTodo = { todo: inputValue, complete: false, cancel: false, date: date };
       setTodos((prev) => {
         const updated = {
           ...prev,
-          [navEngParsing]: [...(prev[navEngParsing] ?? []), newTodo],
+          [navKey]: [...(prev[navKey] ?? []), newTodo],
         };
         setLocalStorage("todos", updated);
         return updated;
@@ -52,6 +74,7 @@ export const Input: React.FC<OwnProps> = ({ nav }) => {
 };
 
 const Layout = styled.div`
+  width: 100%;
   input {
     width: 100%;
     padding: 1.3rem 1rem;
