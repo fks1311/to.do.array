@@ -15,8 +15,7 @@ import { EditableState } from "@model/stateTodo";
  */
 export const Todo = () => {
   const nav = useRecoilValue(NavState);
-  const [editableIndex, setEditableIndex] = useState<number | null>(null);
-  const [editable, setEditable] = useState<EditableState>({ idx: 0, isSelect: false });
+  const [editable, setEditable] = useState<EditableState>({ idx: null, isSelect: false });
 
   const NavTodoInfo: React.FC = () => {
     const txt =
@@ -41,20 +40,8 @@ export const Todo = () => {
         ) : (
           <>
             <Summary nav={nav.nav} />
-            <Input
-              nav={nav.nav}
-              editableIndex={editableIndex}
-              setEditableIndex={setEditableIndex}
-              editable={editable}
-              setEditable={setEditable}
-            />
-            <List
-              nav={nav.nav}
-              editableIndex={editableIndex}
-              setEditableIndex={setEditableIndex}
-              editable={editable}
-              setEditable={setEditable}
-            />
+            <Input nav={nav.nav} editable={editable} setEditable={setEditable} />
+            <List nav={nav.nav} editable={editable} setEditable={setEditable} />
           </>
         )}
       </Main>

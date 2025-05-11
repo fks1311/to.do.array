@@ -10,14 +10,12 @@ import { getTomorrowDate, Today } from "@utils/date";
 import { EditableState } from "@model/stateTodo";
 
 interface OwnProps extends Pick<NavItem, "nav"> {
-  editableIndex: number | null;
-  setEditableIndex?: React.Dispatch<React.SetStateAction<number | null>>;
   editable: EditableState;
   setEditable: React.Dispatch<React.SetStateAction<EditableState>>;
 }
-export const Input: React.FC<OwnProps> = ({ nav, editableIndex, editable, setEditable }) => {
+export const Input: React.FC<OwnProps> = ({ nav, editable, setEditable }) => {
   const [inputValue, setInputValue] = useState<string>(
-    (editableIndex !== null && getLocalStorage("todos")?.[navKorToEngParsing(nav)]?.[editableIndex])?.todo ?? 0
+    (editable.idx !== null && getLocalStorage("todos")?.[navKorToEngParsing(nav)]?.[editable.idx])?.todo ?? 0
   );
   const setTodos = useSetRecoilState(initTodosAtom);
   const setTrigger = useSetRecoilState(triggerAtom);
@@ -25,11 +23,11 @@ export const Input: React.FC<OwnProps> = ({ nav, editableIndex, editable, setEdi
   const handleKeyDown = (e: React.KeyboardEvent, nav: string) => {
     const navKey = navKorToEngParsing(nav);
 
-    if (e.code === "Enter" && e.nativeEvent.isComposing === false && editableIndex !== null) {
+    if (e.code === "Enter" && e.nativeEvent.isComposing === false && editable.idx !== null) {
       const localStorageTodos = getLocalStorage("todos")?.[navKey] ?? [];
       // 입력된 todo 내용 수정
       const updateInput = localStorageTodos.map((data: {}, i: number) => {
-        return i === editableIndex ? { ...data, todo: inputValue } : data;
+        return i === editable.idx ? { ...data, todo: inputValue } : data;
       });
 
       setTodos((prev) => {
