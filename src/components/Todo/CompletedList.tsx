@@ -71,19 +71,33 @@ export const CompletedList: React.FC = () => {
   return (
     <Layout>
       <Content>
-        {getStorageCompletedTodos?.map((todo: TodoItemWithoutDate, idx: number) => (
-          <Todo key={idx}>
-            <CheckTodo>
-              {todo.complete && <CircleCheckBig color="#006A71" onClick={() => onClickUpdate(idx, "complete")} />}
-              {todo.cancel && <CircleX color="#820300" onClick={() => onClickUpdate(idx, "cancel")} />}
-              {todo.todo}
-            </CheckTodo>
-            <Trash2 size={20} onClick={() => onDelete(idx)} />
-          </Todo>
-        ))}
+        {getStorageCompletedTodos?.map(
+          (todo: { complete: boolean; cancel: boolean; todo: string; date: string }, idx: number) => {
+            const [_, month, day] = todo.date.split("-");
+            return (
+              <Todo key={idx}>
+                <CheckTodo>
+                  {todo.complete && <CircleCheckBig color="#006A71" onClick={() => onClickUpdate(idx, "complete")} />}
+                  {todo.cancel && <CircleX color="#820300" onClick={() => onClickUpdate(idx, "cancel")} />}
+                  {todo.todo}
+                </CheckTodo>
+                <RightAlign>
+                  {month}월 {day}일
+                  <Trash2 size={20} onClick={() => onDelete(idx)} />
+                </RightAlign>
+              </Todo>
+            );
+          }
+        )}
       </Content>
     </Layout>
   );
 };
 
 const Layout = styled.div``;
+const RightAlign = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+`;
