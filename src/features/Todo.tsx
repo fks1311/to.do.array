@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useRecoilValue } from "recoil";
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { List } from "@components/Todo/List";
 import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/input/Input";
 import { CompletedList } from "@components/Todo/CompletedList";
-import { NavState } from "@utils/atom";
+import { editableAtom, NavState } from "@utils/atom";
 import { EditableState } from "@model/stateTodo";
 
 /**
@@ -15,7 +15,7 @@ import { EditableState } from "@model/stateTodo";
  */
 export const Todo = () => {
   const nav = useRecoilValue(NavState);
-  const [editable, setEditable] = useState<EditableState>({ idx: null, isSelect: false });
+  const [editable, setEditable] = useRecoilState(editableAtom);
 
   const NavTodoInfo: React.FC = () => {
     const txt =

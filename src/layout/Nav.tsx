@@ -1,17 +1,19 @@
 import React from "react";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { NavAtom, NavItem } from "@model/Nav";
-import { NavState } from "@utils/atom";
+import { editableAtom, NavState } from "@utils/atom";
 import { Sun, Sunset, CalendarRange, CalendarCheck } from "lucide-react";
 import { getCompletedTodosByDate, navLocalTodos } from "@utils/todoHelpers";
 
 type NavItemWithPending = NavItem & Pick<NavAtom, "pendingCount">;
 export const Nav: React.FC = () => {
-  const setCurNav = useSetRecoilState<NavAtom>(NavState);
+  const setCurNav = useSetRecoilState(NavState);
+  const resetEditable = useResetRecoilState(editableAtom);
   const onClickNav = (data: NavAtom) => {
     setCurNav({ nav: data.nav, pendingCount: data.pendingCount, completedCount: getCompletedTodosByDate(data.nav) });
+    resetEditable();
   };
   const navlist: NavItemWithPending[] = [
     { icon: <Sun color="#67AE6E" />, nav: "오늘", pendingCount: navLocalTodos("오늘")?.length ?? 0 },

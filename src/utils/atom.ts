@@ -2,6 +2,7 @@ import { atom } from "recoil";
 import { NavAtom } from "@model/Nav";
 import { basic, LocalStorage } from "@model/locaStorage";
 import { getCompletedTodosByDate, navLocalTodos } from "./todoHelpers";
+import { EditableState } from "@model/stateTodo";
 
 /**
  * 네비게이션 상태(atom)를 정의합니다.
@@ -41,11 +42,25 @@ export const initTodosAtom = atom<LocalStorage>({
 });
 
 /**
- * todos 값 변경에 대한 상태 변화를 정의하는 atom입니다.
+ * todos 값 변경에 대한 상태 변화를 정의합니다.
  *
  * 해당 값은 todo 항목의 상태나 변경 사항을 추적하는 용도로 사용됩니다.
  */
 export const triggerAtom = atom<number>({
   key: "triggerState",
   default: 0,
+});
+
+/**
+ * 할 일 목록 입력 상태 변화를 정의합니다.
+ * @type {EditableState}
+ * @default
+ * {
+ *    idx: number | null;
+ *    isSelect: boolean;
+ * }
+ */
+export const editableAtom = atom<EditableState>({
+  key: "editableState",
+  default: { idx: null, isSelect: false },
 });
