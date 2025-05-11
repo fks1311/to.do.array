@@ -75,7 +75,7 @@ export const CompletedList: React.FC = () => {
           (todo: { complete: boolean; cancel: boolean; todo: string; date: string }, idx: number) => {
             const [_, month, day] = todo.date.split("-");
             return (
-              <Todo key={idx}>
+              <Todo key={idx} $edit={null} idx={idx}>
                 <CheckTodo>
                   {todo.complete && <CircleCheckBig color="#006A71" onClick={() => onClickUpdate(idx, "complete")} />}
                   {todo.cancel && <CircleX color="#820300" onClick={() => onClickUpdate(idx, "cancel")} />}
