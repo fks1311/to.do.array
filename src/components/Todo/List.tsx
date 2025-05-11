@@ -11,16 +11,19 @@ import { navKorToEngParsing } from "@utils/todoHelpers";
 import { triggerAtom } from "@utils/atom";
 import { Today } from "@utils/date";
 import { Input } from "./input/Input";
+import { EditableState } from "@model/stateTodo";
 
 interface OwnProps extends Pick<NavItem, "nav"> {
   editableIndex: number | null;
   setEditableIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  editable: EditableState;
+  setEditable: React.Dispatch<React.SetStateAction<EditableState>>;
 }
 interface TodoStyleProps {
   $edit?: number | null;
   idx?: number;
 }
-export const List: React.FC<OwnProps> = ({ nav, editableIndex, setEditableIndex }) => {
+export const List: React.FC<OwnProps> = ({ nav, editableIndex, setEditableIndex, editable, setEditable }) => {
   const getStorageTodos = getLocalStorage("todos");
   const day = navKorToEngParsing(nav);
   const [list, setList] = useState<TodoItem[]>([]); // 현재 nav의 할 일 목록
@@ -76,14 +79,36 @@ export const List: React.FC<OwnProps> = ({ nav, editableIndex, setEditableIndex 
     });
   };
 
+  const handleEditIndex = (idx: number) => {
+    setEditable({ idx: idx, isSelect: true });
+  };
+  console.log(editableIndex, editable.idx);
   return (
     <Layout>
       <p>할 일</p>
       <Content>
         {list?.map((todo, idx) => (
-          <Todo key={idx} $edit={editableIndex} idx={idx}>
-            {editableIndex === idx ? (
+          <Todo key={idx} $edit={editableIndex} idx={idx} onClick={() => handleEditIndex(idx)}>
+            {/* {editableIndex === idx ? (
               <Input nav={nav} editableIndex={editableIndex} setEditableIndex={setEditableIndex} />
+            ) : (
+              <>
+                <CheckTodo onClick={() => setEditableIndex(idx)}>
+                  {!todo.complete && <Circle size={20} color="#3674B5" onClick={() => onCompleted(idx)} />}
+                  {todo.todo}
+                </CheckTodo>
+                <ChevronDown onClick={() => onClickOpen(idx)} />
+                <TodoCheckDown idx={idx} nav={nav} isOpen={isOpen[idx]} setIsOpen={setIsOpen} />
+              </>
+            )} */}
+            {editable.isSelect && editableIndex === idx ? (
+              <Input
+                nav={nav}
+                editableIndex={editableIndex}
+                setEditableIndex={setEditableIndex}
+                editable={editable}
+                setEditable={setEditable}
+              />
             ) : (
               <>
                 <CheckTodo onClick={() => setEditableIndex(idx)}>

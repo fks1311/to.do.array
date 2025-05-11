@@ -7,12 +7,15 @@ import { initTodosAtom, triggerAtom } from "@utils/atom";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { navKorToEngParsing } from "@utils/todoHelpers";
 import { getTomorrowDate, Today } from "@utils/date";
+import { EditableState } from "@model/stateTodo";
 
 interface OwnProps extends Pick<NavItem, "nav"> {
   editableIndex: number | null;
   setEditableIndex?: React.Dispatch<React.SetStateAction<number | null>>;
+  editable: EditableState;
+  setEditable: React.Dispatch<React.SetStateAction<EditableState>>;
 }
-export const Input: React.FC<OwnProps> = ({ nav, editableIndex }) => {
+export const Input: React.FC<OwnProps> = ({ nav, editableIndex, editable, setEditable }) => {
   const [inputValue, setInputValue] = useState<string>(
     (editableIndex !== null && getLocalStorage("todos")?.[navKorToEngParsing(nav)]?.[editableIndex])?.todo ?? 0
   );
@@ -38,6 +41,7 @@ export const Input: React.FC<OwnProps> = ({ nav, editableIndex }) => {
         return updated;
       });
       setTrigger((prev) => prev + 1);
+      setEditable({ idx: null, isSelect: false });
     } else if (e.code === "Enter" && e.nativeEvent.isComposing === false) {
       // 새로운 todo 추가
       if (!inputValue?.trim()) return; // 공백이거나 미입력 방지

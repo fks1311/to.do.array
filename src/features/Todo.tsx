@@ -7,6 +7,7 @@ import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/input/Input";
 import { CompletedList } from "@components/Todo/CompletedList";
 import { NavState } from "@utils/atom";
+import { EditableState } from "@model/stateTodo";
 
 /**
  * 내일 -> 완료할 작업 갯수, summary 제거
@@ -15,6 +16,7 @@ import { NavState } from "@utils/atom";
 export const Todo = () => {
   const nav = useRecoilValue(NavState);
   const [editableIndex, setEditableIndex] = useState<number | null>(null);
+  const [editable, setEditable] = useState<EditableState>({ idx: 0, isSelect: false });
 
   const NavTodoInfo: React.FC = () => {
     const txt =
@@ -39,8 +41,20 @@ export const Todo = () => {
         ) : (
           <>
             <Summary nav={nav.nav} />
-            <Input nav={nav.nav} editableIndex={editableIndex} setEditableIndex={setEditableIndex} />
-            <List nav={nav.nav} editableIndex={editableIndex} setEditableIndex={setEditableIndex} />
+            <Input
+              nav={nav.nav}
+              editableIndex={editableIndex}
+              setEditableIndex={setEditableIndex}
+              editable={editable}
+              setEditable={setEditable}
+            />
+            <List
+              nav={nav.nav}
+              editableIndex={editableIndex}
+              setEditableIndex={setEditableIndex}
+              editable={editable}
+              setEditable={setEditable}
+            />
           </>
         )}
       </Main>
