@@ -15,7 +15,7 @@ const Head = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  // padding: 1rem;
+  padding: 1rem;
   height: 15%;
   border-bottom: 1px solid ${({ theme: { darkmode } }) => darkmode.divider};
   img {
