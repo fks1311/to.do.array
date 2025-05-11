@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -12,6 +12,7 @@ import { triggerAtom } from "@utils/atom";
 import { Today } from "@utils/date";
 import { Input } from "./input/Input";
 import { EditableState } from "@model/stateTodo";
+import { useClickOutside } from "hooks/useClickOutside";
 
 interface OwnProps extends Pick<NavItem, "nav"> {
   editable: EditableState;
@@ -24,6 +25,7 @@ interface TodoStyleProps {
 export const List: React.FC<OwnProps> = ({ nav, editable, setEditable }) => {
   const getStorageTodos = getLocalStorage("todos");
   const day = navKorToEngParsing(nav);
+  const ref = useRef(null);
   const [list, setList] = useState<TodoItem[]>([]); // 현재 nav의 할 일 목록
   const [complete, setComplete] = useState<TodoItem[]>(getStorageTodos?.completed ?? []); // 할 일 목록 완료 여부
   const [isOpen, setIsOpen] = useState<boolean[] | []>([]); // 상태변경(취소, 미루기, 삭제) 버튼 UI 활성화
@@ -80,12 +82,20 @@ export const List: React.FC<OwnProps> = ({ nav, editable, setEditable }) => {
   const handleEditIndex = (idx: number) => {
     setEditable({ idx: idx, isSelect: true });
   };
+
+  // 외부 클릭 시 입력창 비활성화
+  useClickOutside(ref, () => {
+    if (typeof setEditable === "function") {
+      setEditable({ idx: null, isSelect: false });
+    }
+  });
+
   return (
-    <Layout>
+    <Layout ref={ref}>
       <p>할 일</p>
       <Content>
         {list?.map((todo, idx) => (
-          <Todo key={idx} $edit={editable.idx} idx={idx} onClick={() => handleEditIndex(idx)}>
+          <Todo key={idx} $edit={editable.idx} idx={idx}>
             {editable.isSelect && editable.idx === idx ? (
               <Input nav={nav} editable={editable} setEditable={setEditable} />
             ) : (
