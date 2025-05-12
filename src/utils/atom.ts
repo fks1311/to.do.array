@@ -2,7 +2,7 @@ import { atom } from "recoil";
 import { NavAtom } from "@model/Nav";
 import { basic, LocalStorage } from "@model/locaStorage";
 import { getCompletedTodosByDate, navLocalTodos } from "./todoHelpers";
-import { EditableState, TimeState } from "@model/stateTodo";
+import { EditableState, ShowModalState, TimeState } from "@model/stateTodo";
 
 /**
  * 네비게이션 상태(atom)를 정의합니다.
@@ -77,4 +77,13 @@ export const editableAtom = atom<EditableState>({
 export const timeAtom = atom<TimeState>({
   key: "timeState",
   default: { minutes: 25, seconds: 0 },
+});
+
+/**
+ * 타이머 시간 설정 모달의 열림 여부를 정의합니다.
+ * @type {ShowModalState}
+ */
+export const showModal = atom<ShowModalState>({
+  key: "showModalState",
+  default: false,
 });

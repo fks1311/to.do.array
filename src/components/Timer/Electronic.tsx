@@ -3,20 +3,21 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import useInterval from "hooks/useInterval";
 import { getLocalStorage, hasLocalStorageKey, setLocalStorage } from "@utils/localStorage";
+import { showModal, timeAtom, triggerAtom } from "@utils/atom";
 import "@styles/font/font.css";
-import { timeAtom, triggerAtom } from "@utils/atom";
 
 export const Electronic: React.FC = () => {
   const [{ minutes, seconds }, setTimer] = useRecoilState(timeAtom);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [shouldContinue, setShouldContinue] = useState<boolean>(false);
   const setTrigger = useSetRecoilState(triggerAtom);
+  const setIsModalOpen = useSetRecoilState(showModal);
 
   // localStorageTimer 초기값 설정
   useEffect(() => {
     const getStorageTimer = getLocalStorage("timer");
     if (hasLocalStorageKey("timer") === false) {
-      setLocalStorage("timer", { default: minutes, today: 0, weekend: 0 });
+      setLocalStorage("timer", { _minutes: minutes, _secondes: seconds, today: 0, weekend: 0 });
     } else {
       setLocalStorage("timer", getStorageTimer);
     }
@@ -67,7 +68,7 @@ export const Electronic: React.FC = () => {
 
   return (
     <Layout>
-      <Clock>
+      <Clock onClick={() => setIsModalOpen(true)}>
         <h2>
           {String(minutes).padStart(2, "0")} : {String(seconds).padStart(2, "0")}
         </h2>
@@ -110,6 +111,7 @@ const Clock = styled.div`
   font-family: DS-DIGI;
   border: 1px solid white;
   border-radius: 10px;
+  cursor: pointer;
 `;
 
 const ButtonContainer = styled.div`

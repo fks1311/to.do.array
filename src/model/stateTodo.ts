@@ -7,3 +7,5 @@ export interface TimeState {
   minutes: number;
   seconds: number;
 }
+
+export type ShowModalState = boolean;
