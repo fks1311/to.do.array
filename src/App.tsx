@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { Header } from "layout/Head";
 import { Nav } from "layout/Nav";
 import { Todo } from "features/Todo";
 import { basic } from "@model/locaStorage";
-import { initTodosAtom, triggerAtom } from "@utils/atom";
+import { editableAtom, initTodosAtom, triggerAtom } from "@utils/atom";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
 import { isDateExpired, Today } from "@utils/date";
 import { Timer } from "features/Timer";
@@ -14,6 +14,7 @@ import { Modal } from "@components/Timer/Modal";
 
 function App() {
   const setTodos = useSetRecoilState(initTodosAtom);
+  const resetEditable = useResetRecoilState(editableAtom);
   const trigger = useRecoilValue(triggerAtom);
   const expired = isDateExpired(Today()); // true 지남 false 오늘
 
@@ -26,6 +27,7 @@ function App() {
     } else {
       setTodos(JSON.parse(storedTodos));
     }
+    resetEditable();
   }, [trigger]);
 
   // 하루 지남에 따른 todo 목록 등록 날짜 조정
