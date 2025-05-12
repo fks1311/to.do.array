@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import useInterval from "hooks/useInterval";
 import { getLocalStorage, hasLocalStorageKey, setLocalStorage } from "@utils/localStorage";
 import "@styles/font/font.css";
-import { useSetRecoilState } from "recoil";
-import { triggerAtom } from "@utils/atom";
+import { timeAtom, triggerAtom } from "@utils/atom";
 
 export const Electronic: React.FC = () => {
-  const [minutes, setMinutes] = useState<number>(25);
-  const [seconds, setSeconds] = useState<number>(0);
+  const [{ minutes, seconds }, setTimer] = useRecoilState(timeAtom);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [shouldContinue, setShouldContinue] = useState<boolean>(false);
   const setTrigger = useSetRecoilState(triggerAtom);
@@ -28,10 +27,16 @@ export const Electronic: React.FC = () => {
     if (minutes === 0 && seconds === 0) {
       setIsRunning(false);
     } else if (seconds === 0) {
-      setMinutes((prev) => prev - 1);
-      setSeconds(59);
+      setTimer((prev) => ({
+        ...prev,
+        minutes: prev.minutes - 1,
+        seconds: 59,
+      }));
     } else {
-      setSeconds((prev) => prev - 1);
+      setTimer((prev) => ({
+        ...prev,
+        seconds: prev.seconds - 1,
+      }));
     }
   }, [minutes, seconds]);
 
@@ -57,8 +62,7 @@ export const Electronic: React.FC = () => {
     setTrigger((prev) => prev + 1);
     setIsRunning(false);
     setShouldContinue(false);
-    setMinutes(25);
-    setSeconds(0);
+    setTimer({ minutes: 25, seconds: 0 });
   };
 
   return (

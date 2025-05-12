@@ -2,7 +2,7 @@ import { atom } from "recoil";
 import { NavAtom } from "@model/Nav";
 import { basic, LocalStorage } from "@model/locaStorage";
 import { getCompletedTodosByDate, navLocalTodos } from "./todoHelpers";
-import { EditableState } from "@model/stateTodo";
+import { EditableState, TimeState } from "@model/stateTodo";
 
 /**
  * 네비게이션 상태(atom)를 정의합니다.
@@ -63,4 +63,18 @@ export const triggerAtom = atom<number>({
 export const editableAtom = atom<EditableState>({
   key: "editableState",
   default: { idx: null, isSelect: false },
+});
+
+/**
+ * 타이머 초기값을 정의합니다.
+ * @type {TimeState}
+ * @default
+ * {
+ *    minutes: number;
+ *    seconds: number;
+ * }
+ */
+export const timeAtom = atom<TimeState>({
+  key: "timeState",
+  default: { minutes: 25, seconds: 0 },
 });
