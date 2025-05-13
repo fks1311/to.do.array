@@ -17,7 +17,7 @@ export const Electronic: React.FC = () => {
   useEffect(() => {
     const getStorageTimer = getLocalStorage("timer");
     if (hasLocalStorageKey("timer") === false) {
-      setLocalStorage("timer", { _minutes: minutes, _secondes: seconds, today: 0, weekend: 0 });
+      setLocalStorage("timer", { _minutes: minutes, _seconds: seconds, today: 0, weekend: 0 });
     } else {
       setLocalStorage("timer", getStorageTimer);
     }
@@ -48,6 +48,7 @@ export const Electronic: React.FC = () => {
     const defaultMinutes = getLocalStorage("timer")?.default;
 
     let current = defaultMinutes - (minutes + 1);
+    current = isNaN(current) ? 0 : current;
     let defaultToday = getLocalStorage("timer")?.today;
     defaultToday += current;
 

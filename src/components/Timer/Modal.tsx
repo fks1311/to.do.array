@@ -26,13 +26,23 @@ export const Modal: React.FC = () => {
       _minutes: minutes,
       _seconds: seconds,
     };
+    if (minutes >= 100 || seconds >= 100) {
+      alert("100 분/초를 초과할 수 없습니다.");
+      return;
+    }
     setLocalStorage("timer", newTimer);
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
+    const newTimer = {
+      ...getStorageTimer,
+      _minutes: 25,
+      _seconds: 0,
+    };
     setIsModalOpen(false);
     setTimer({ minutes: 25, seconds: 0 });
+    setLocalStorage("timer", newTimer);
   };
 
   const variants = {
