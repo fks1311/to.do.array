@@ -7,7 +7,7 @@ import { Summary } from "@components/Todo/Summary";
 import { Input } from "@components/Todo/input/Input";
 import { CompletedList } from "@components/Todo/CompletedList";
 import { editableAtom, NavState } from "@utils/atom";
-import { EditableState } from "@model/stateTodo";
+import { AnimatePresence, motion } from "framer-motion";
 
 /**
  * 내일 -> 완료할 작업 갯수, summary 제거
@@ -28,28 +28,45 @@ export const Todo = () => {
     return <TodoInfo>{txt}</TodoInfo>;
   };
 
+  // animation
+  const variants = {
+    init: {
+      opacity: 0,
+      x: 20,
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
-    <Layout>
-      <Title>
-        {nav.nav}
-        <NavTodoInfo />
-      </Title>
-      <Main>
-        {nav.nav === "완료됨" ? (
-          <CompletedList />
-        ) : (
-          <>
-            <Summary nav={nav.nav} />
-            <Input nav={nav.nav} editable={editable} setEditable={setEditable} />
-            <List nav={nav.nav} editable={editable} setEditable={setEditable} />
-          </>
-        )}
-      </Main>
-    </Layout>
+    <AnimatePresence mode="wait">
+      <Layout variants={variants} key={nav.nav} initial="init" animate="animate">
+        <Title>
+          {nav.nav}
+          <NavTodoInfo />
+        </Title>
+        <Main>
+          {nav.nav === "완료됨" ? (
+            <CompletedList />
+          ) : (
+            <>
+              <Summary nav={nav.nav} />
+              <Input nav={nav.nav} editable={editable} setEditable={setEditable} />
+              <List nav={nav.nav} editable={editable} setEditable={setEditable} />
+            </>
+          )}
+        </Main>
+      </Layout>
+    </AnimatePresence>
   );
 };
 
-const Layout = styled.div`
+const Layout = styled(motion.div)`
   flex: 0.5;
   display: flex;
   flex-direction: column;

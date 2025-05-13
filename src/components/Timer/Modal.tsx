@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { ModalLayout } from "layout/ModalLayout";
 import { showModal, timeAtom } from "@utils/atom";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
+import { motion } from "framer-motion";
 
 export const Modal: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState(showModal);
@@ -34,11 +35,16 @@ export const Modal: React.FC = () => {
     setTimer({ minutes: 25, seconds: 0 });
   };
 
+  const variants = {
+    init: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.3 } },
+  };
+
   return (
     <>
       {isModalOpen && (
         <ModalLayout>
-          <Layout>
+          <Layout variants={variants} initial="init" animate="animate">
             <Title>타이머 설정</Title>
             <TimerLayout>
               <Timer>{minutes}</Timer> : <Timer>{String(seconds).padStart(2, "0")}</Timer>
@@ -62,12 +68,12 @@ export const Modal: React.FC = () => {
   );
 };
 
-const Layout = styled.div`
+const Layout = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  width: 50%;
+  width: 40%;
   height: 50%;
   padding: 2rem;
   border-radius: 10px;

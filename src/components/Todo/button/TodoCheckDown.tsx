@@ -8,6 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { triggerAtom } from "@utils/atom";
 import { getTomorrowDate, Today } from "@utils/date";
 import { useClickOutside } from "hooks/useClickOutside";
+import { motion } from "framer-motion";
 
 interface OepnType {
   idx: number;
@@ -91,10 +92,16 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen, setIsOpen 
     setTrigger((prev) => prev + 1);
   };
 
+  // animation
+  const variants = {
+    init: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.5 } },
+  };
+
   return (
     <>
       {isOpen && (
-        <Layout ref={ref}>
+        <Layout ref={ref} variants={variants} initial="init" animate="animate">
           <li onClick={() => onCancel(idx)}>
             <X size={20} />
             취소
@@ -115,7 +122,7 @@ export const TodoCheckDown: React.FC<OepnType> = ({ idx, nav, isOpen, setIsOpen 
   );
 };
 
-const Layout = styled.ul`
+const Layout = styled(motion.ul)`
   position: absolute;
   right: 1rem;
   z-index: 1;
