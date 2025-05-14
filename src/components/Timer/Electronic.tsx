@@ -135,7 +135,9 @@ const ButtonContainer = styled.div`
     border-radius: 10px;
     background-color: white;
     &:hover {
-      background-color: #f5f7f8;
+      color: ${({ theme: { darkmode } }) => darkmode.txt_primary};
+      background-color: ${({ theme: { darkmode } }) => darkmode.bg};
+      border: 1px solid ${({ theme: { darkmode } }) => darkmode.txt_primary};
     }
   }
 `;
