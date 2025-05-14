@@ -41,12 +41,16 @@ export const getTomorrowDate = (today: string): string => {
 };
 
 /**
- * 하루 지났는지 확인하는 함수(오늘 자정 기준)
+ * 하루 또는 일주일 지났는지 확인하는 함수(오늘 자정 기준)
+ * 어제, 저번주 기준으로 지났으면 true, 아니면(미래기준이면) false
  *
  * @param {string} input
  * @returns {boolean} true/false
  */
-export const isDateExpired = (input: string): boolean => {
+export const isExpired = (input: string): boolean => {
+  // console.log(input);
+  // const Type = type === "today" ? 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000;
+
   const inputDate = new Date(input);
   const inputStart = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate()).getTime();
 
@@ -60,3 +64,26 @@ export const isDateExpired = (input: string): boolean => {
 
 // new Date() : 현재 날짜 + 시간
 // new Date(y, m, d) : 그 날짜의 자정 00:00:00
+// 24 * 60 * 60 * 1000 : 하루 24 시간 * 1시간 60분 * 1분 60초 * 1초 1000 = 86,400,000ms
+
+// 해당 주의 월요일 구하기
+export const setStoreDate = (input: string) => {
+  const inputDate = new Date(input);
+  const day = inputDate.getDay();
+  const d = day === 0 ? day - 6 : day - 1;
+
+  const year = inputDate.getFullYear();
+  const month = String(inputDate.getMonth() + 1).padStart(2, "0");
+  const date = String(inputDate.getDate()).padStart(2, "0");
+  const setDate = new Date(`${year}-${month}-${Number(date) - d}`);
+
+  const newYear = setDate.getFullYear();
+  const newMonth = String(setDate.getMonth() + 1).padStart(2, "0");
+  const newDate = String(setDate.getDate()).padStart(2, "0");
+
+  // console.log(`${newYear}-${newMonth}-${newDate}`);
+
+  return `${newYear}-${newMonth}-${newDate}`;
+};
+
+// 일요일부터 시작 0 ~ 토요일 6
