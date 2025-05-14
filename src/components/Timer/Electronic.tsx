@@ -45,19 +45,22 @@ export const Electronic: React.FC = () => {
 
   // 완전 정지
   const handleStop = () => {
-    const defaultMinutes = getLocalStorage("timer")?.default;
+    const defaultMinutes = getLocalStorage("timer")?._minutes;
 
+    // 오늘 완료한 시간
     let current = defaultMinutes - (minutes + 1);
     current = isNaN(current) ? 0 : current;
     let defaultToday = getLocalStorage("timer")?.today;
     defaultToday += current;
 
+    // 이번주 완료한 시간
     let defaultWeekend = getLocalStorage("timer")?.weekend;
-    defaultWeekend += defaultToday;
+    defaultWeekend += current;
 
     let newDuration = {
       ...getLocalStorage("timer"),
       today: defaultToday < 0 ? 0 : defaultToday,
+      weekend: defaultWeekend < 0 ? 0 : defaultWeekend,
     };
 
     setLocalStorage("timer", newDuration);

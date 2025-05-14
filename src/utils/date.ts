@@ -67,7 +67,7 @@ export const isExpired = (input: string): boolean => {
 // 24 * 60 * 60 * 1000 : 하루 24 시간 * 1시간 60분 * 1분 60초 * 1초 1000 = 86,400,000ms
 
 // 해당 주의 월요일 구하기
-export const setStoreDate = (input: string) => {
+export const setStoreDate = (input: string): string => {
   const inputDate = new Date(input);
   const day = inputDate.getDay();
   const d = day === 0 ? day - 6 : day - 1;
