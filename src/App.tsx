@@ -31,6 +31,7 @@ function App() {
   // init
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
+    setLocalStorage("today", Today());
     if (!storedTodos) {
       setLocalStorage("todos", basic);
       setTodos(basic);
@@ -40,12 +41,13 @@ function App() {
     resetEditable();
   }, [trigger]);
 
+  // local에 저장해서 확인해야할듯
   // 하루 지남 체크
   useEffect(() => {
     const isToday = setInterval(() => {
       setToday(Today());
     }, 1000 * 60 * 10); // 10분마다 확인
-    return clearInterval(isToday);
+    return () => clearInterval(isToday);
   }, []);
 
   // 속한 주의 월요일 체크
@@ -53,12 +55,13 @@ function App() {
     const isWeek = setInterval(() => {
       setWeek(Today());
     }, 24 * 60 * 60 * 1000); // 하루마다 확인
-    return clearInterval(isWeek);
+    return () => clearInterval(isWeek);
   }, []);
 
   // 하루 지남에 따른 todo 목록 등록 날짜 조정
   useEffect(() => {
-    if (!isExpired(today)) return;
+    if (!isExpired(getLocalStorage("today"))) return;
+
     const getStorageTodos = getLocalStorage("todos");
     let todayAndTomorrowTodo = [...getStorageTodos.today, getStorageTodos.tomorrow].flat(); // 내일 할일 오늘 할일로 항목 합치기
     const updateDate = todayAndTomorrowTodo.map((data: {}, i: number) => {
@@ -79,6 +82,7 @@ function App() {
       today: 0,
     };
     setLocalStorage("timer", updateStorageTimer);
+    setLocalStorage("today", Today());
   }, [today]);
 
   // 일주일 지남에 따른 todo & timer 초기화
@@ -104,25 +108,32 @@ function App() {
   }, [week]);
 
   return (
-    <Layout>
+    <>
       <Modal />
-      <Header />
-      <Main>
-        <Nav />
-        <Timer />
-        <Todo />
-      </Main>
-    </Layout>
+      <Layout>
+        <Header />
+        <Main>
+          <Nav />
+          <Timer />
+          <Todo />
+        </Main>
+      </Layout>
+    </>
   );
 }
 
 export default App;
 
 const Layout = styled.div`
+  min-width: 600px;
   height: 100%;
   width: 100%;
 `;
 const Main = styled.main`
   height: 84%;
   display: flex;
+  @media ${({ theme }) => theme.media.tablet} {
+    display: flex;
+    flex-direction: column;
+  }
 `;
