@@ -4,7 +4,8 @@
  * @returns {string} yyyy-mm-dd
  */
 export const Today = (): string => {
-  const today = new Date();
+  const curretnr = new Date();
+  const today = new Date(curretnr.getFullYear(), curretnr.getMonth(), curretnr.getDate());
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const date = String(today.getDate()).padStart(2, "0");
@@ -80,8 +81,6 @@ export const setStoreDate = (input: string): string => {
   const newYear = setDate.getFullYear();
   const newMonth = String(setDate.getMonth() + 1).padStart(2, "0");
   const newDate = String(setDate.getDate()).padStart(2, "0");
-
-  // console.log(`${newYear}-${newMonth}-${newDate}`);
 
   return `${newYear}-${newMonth}-${newDate}`;
 };
