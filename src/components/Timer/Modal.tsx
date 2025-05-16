@@ -1,10 +1,10 @@
 import React from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { motion } from "framer-motion";
 import { ModalLayout } from "layout/ModalLayout";
 import { showModal, timeAtom } from "@utils/atom";
 import { getLocalStorage, setLocalStorage } from "@utils/localStorage";
-import { motion } from "framer-motion";
 
 export const Modal: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState(showModal);
@@ -79,12 +79,13 @@ export const Modal: React.FC = () => {
 };
 
 const Layout = styled(motion.div)`
+  min-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  width: 40%;
-  height: 50%;
+  width: 40vw;
+  height: 45vh;
   padding: 2rem;
   border-radius: 10px;
   background-color: ${({ theme: { darkmode } }) => darkmode.txt_primary};
@@ -95,17 +96,25 @@ const Title = styled.div`
 const TimerLayout = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
-  padding: 1rem 6rem;
+  width: 25vw;
+  padding: 1.5rem 0px;
   border: 2px solid ${({ theme: { darkmode } }) => darkmode.bg};
   border-radius: 10px;
+  @media ${({ theme: { media } }) => media.mobile} {
+    width: 40vw;
+  }
 `;
 const Timer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 8rem;
+  font-size: 6rem;
   font-family: DS-DIGI;
+  @media ${({ theme: { media } }) => media.tablet} {
+    font-size: 4rem;
+  }
 `;
 const TimerSettingLayout = styled.div`
   width: 80%;
@@ -113,9 +122,17 @@ const TimerSettingLayout = styled.div`
   justify-content: center;
   gap: 1rem;
   input {
+    width: 10vw;
     padding: 0.3rem;
     border-radius: 5px;
     border: 1px solid ${({ theme: { darkmode } }) => darkmode.bg};
+  }
+  @media ${({ theme: { media } }) => media.mobile} {
+    flex-direction: column;
+    align-items: center;
+    input {
+      width: 25vw;
+    }
   }
 `;
 

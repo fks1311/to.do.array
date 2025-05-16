@@ -44,6 +44,10 @@ const Layout = styled.nav`
   gap: 15px;
   padding: 1rem;
   border-right: 1px solid ${({ theme: { darkmode } }) => darkmode.divider};
+  @media ${({ theme }) => theme.media.tablet} {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 `;
 
 const NavList = styled.div`
@@ -55,6 +59,10 @@ const NavList = styled.div`
   &:hover {
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  @media ${({ theme }) => theme.media.tablet} {
+    align-items: flex-end;
+    gap: 0.5rem;
   }
 `;
 

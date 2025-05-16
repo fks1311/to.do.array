@@ -3,8 +3,8 @@ import { DefaultTheme } from "styled-components";
 const breakpoints: DefaultTheme["breakpoints"] = {
   smaller: `479px`,
   mobile: `767px`,
-  tablet: `1023px`,
-  desktop: `1024px`,
+  tablet: `1229px`,
+  desktop: `1230px`,
 };
 
 const media: DefaultTheme["media"] = {
