@@ -1,4 +1,4 @@
-## DAY6 Fanground
+## to•do•focus
 
 [VIEW LIVE PROJECT →](https://to-do-focus.netlify.app/)
 
