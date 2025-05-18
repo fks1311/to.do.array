@@ -88,24 +88,22 @@ function App() {
   // 일주일 지남에 따른 todo & timer 초기화
   useEffect(() => {
     const isLastWeek = new Date(Today()) > new Date(week);
-    if (isLastWeek) return;
-    else {
-      const initWeek = {
-        today: [],
-        tomorrow: [],
-        week: [],
-        completed: [],
-      };
-      setLocalStorage("todos", initWeek);
 
-      const updateStorageTimer = {
-        ...getStorageTimer,
-        today: 0,
-        weekend: 0,
-      };
-      setLocalStorage("timer", updateStorageTimer);
-      setTrigger((prev) => prev + 1);
-    }
+    if (isLastWeek) return;
+    const initWeek = {
+      today: [],
+      tomorrow: [],
+      week: [],
+      completed: [],
+    };
+    setLocalStorage("todos", initWeek);
+    const updateStorageTimer = {
+      ...getStorageTimer,
+      today: 0,
+      weekend: 0,
+    };
+    setLocalStorage("timer", updateStorageTimer);
+    setTrigger((prev) => prev + 1);
   }, [week]);
 
   return (

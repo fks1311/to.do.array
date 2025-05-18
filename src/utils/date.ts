@@ -71,18 +71,14 @@ export const isExpired = (input: string): boolean => {
 export const setStoreDate = (input: string): string => {
   const inputDate = new Date(input);
   const day = inputDate.getDay();
-  const d = day === 0 ? day - 6 : day - 1;
+  const diff = day === 0 ? 6 : day - 1;
+  inputDate.setDate(inputDate.getDate() - diff);
 
   const year = inputDate.getFullYear();
   const month = String(inputDate.getMonth() + 1).padStart(2, "0");
   const date = String(inputDate.getDate()).padStart(2, "0");
-  const setDate = new Date(`${year}-${month}-${Number(date) - d}`);
 
-  const newYear = setDate.getFullYear();
-  const newMonth = String(setDate.getMonth() + 1).padStart(2, "0");
-  const newDate = String(setDate.getDate()).padStart(2, "0");
-
-  return `${newYear}-${newMonth}-${newDate}`;
+  return `${year}-${month}-${date}`;
 };
 
 // 일요일부터 시작 0 ~ 토요일 6
