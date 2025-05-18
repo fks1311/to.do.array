@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { Nav } from "@layout/Nav";
@@ -24,7 +24,7 @@ function App() {
   const setTodos = useSetRecoilState(initTodosAtom);
   const resetEditable = useResetRecoilState(editableAtom);
   const getStorageTimer = getLocalStorage("timer");
-  const trigger = useRecoilValue(triggerAtom);
+  const [trigger, setTrigger] = useRecoilState(triggerAtom);
   const [today, setToday] = useState(Today());
   const [week, setWeek] = useState(setStoreDate(Today())); // 오늘이면 안되고 월요일 날짜마다 저장
 
@@ -82,7 +82,7 @@ function App() {
       today: 0,
     };
     setLocalStorage("timer", updateStorageTimer);
-    setLocalStorage("today", Today());
+    setTrigger((prev) => prev + 1);
   }, [today]);
 
   // 일주일 지남에 따른 todo & timer 초기화
@@ -104,6 +104,7 @@ function App() {
         weekend: 0,
       };
       setLocalStorage("timer", updateStorageTimer);
+      setTrigger((prev) => prev + 1);
     }
   }, [week]);
 
