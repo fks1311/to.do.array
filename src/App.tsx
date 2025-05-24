@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {
     const isToday = setInterval(() => {
       setToday(Today());
-      setWeek(Today());
+      setWeek(setStoreDate(Today()));
     }, 1000 * 60); // 1분마다 확인
     return () => clearInterval(isToday);
   }, []);
@@ -80,7 +80,7 @@ function App() {
 
   // 일주일 지남에 따른 todo & timer 초기화
   useEffect(() => {
-    const isLastWeek = new Date(Today()) > new Date(setStoreDate(Today()));
+    const isLastWeek = new Date(Today()) > new Date(week);
 
     if (isLastWeek) return;
     const initWeek = {
