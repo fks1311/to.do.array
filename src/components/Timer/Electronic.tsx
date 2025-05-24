@@ -43,6 +43,8 @@ export const Electronic: React.FC = () => {
 
   useInterval(isRunning, tick);
 
+  // 오늘 완료한 시간을 배열로 저장[일주일]
+
   // 완전 정지
   const handleStop = () => {
     const defaultMinutes = getLocalStorage("timer")?._minutes;

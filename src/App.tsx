@@ -41,21 +41,13 @@ function App() {
     resetEditable();
   }, [trigger]);
 
-  // local에 저장해서 확인해야할듯
-  // 하루 지남 체크
+  // 일 / 주간 지남 체크
   useEffect(() => {
     const isToday = setInterval(() => {
       setToday(Today());
-    }, 1000 * 60 * 10); // 10분마다 확인
-    return () => clearInterval(isToday);
-  }, []);
-
-  // 속한 주의 월요일 체크
-  useEffect(() => {
-    const isWeek = setInterval(() => {
       setWeek(Today());
-    }, 24 * 60 * 60 * 1000); // 하루마다 확인
-    return () => clearInterval(isWeek);
+    }, 1000 * 60); // 1분마다 확인
+    return () => clearInterval(isToday);
   }, []);
 
   // 하루 지남에 따른 todo 목록 등록 날짜 조정
@@ -81,13 +73,14 @@ function App() {
       ...getStorageTimer,
       today: 0,
     };
+
     setLocalStorage("timer", updateStorageTimer);
     setTrigger((prev) => prev + 1);
   }, [today]);
 
   // 일주일 지남에 따른 todo & timer 초기화
   useEffect(() => {
-    const isLastWeek = new Date(Today()) > new Date(week);
+    const isLastWeek = new Date(Today()) > new Date(setStoreDate(Today()));
 
     if (isLastWeek) return;
     const initWeek = {
